@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/app.js",
-    "dev": "ts-node-dev src/app.ts",
+    "build": "tsc",                                 
+    "start": "node dist/app.js",                   
+    "dev": "ts-node-dev src/app.ts",                
+    "dev:build": "npm run build && npm run dev",    
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
