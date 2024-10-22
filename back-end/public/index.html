@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>User Management</h1>
+    <button id="registerButton">Register User</button>
+    <button id="showUsersButton">Show Users</button>
+
+    <div id="registerForm" style="display:none;">
+        <h2>Register User</h2>
+        <form id="userRegistrationForm">
+            <input type="text" name="name" placeholder="Name" required><br>
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="text" name="cnp" placeholder="CNP" required><br>
+            <input type="text" name="address" placeholder="Address" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <button type="submit">Add User</button>
+        </form>
+    </div>
+
+    <div id="userList" style="display:none;">
+        <h2>Registered Users</h2>
+        <ul id="users"></ul>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Toggle the registration form
+            $("#registerButton").click(function() {
+                $("#registerForm").toggle();
+                $("#userList").hide(); // Hide user list if open
+            });
+
+            // Toggle the user list
+            $("#showUsersButton").click(function() {
+                $("#userList").toggle();
+                $("#registerForm").hide(); // Hide registration form if open
+                fetchUsers();
+            });
+
+            // Handle form submission for registering a user
+            $("#userRegistrationForm").submit(function(event) {
+                event.preventDefault();
+
+                const formData = {
+                    name: $("input[name='name']").val(),
+                    username: $("input[name='username']").val(),
+                    cnp: $("input[name='cnp']").val(),
+                    address: $("input[name='address']").val(),
+                    password: $("input[name='password']").val()
+                };
+
+                $.post("/api/register", formData, function(response) {
+                    alert(response.message);
+                    $("#userRegistrationForm")[0].reset();
+                    $("#registerForm").hide();
+                }).fail(function(xhr) {
+                    alert("Error: " + xhr.responseJSON.message);
+                });
+            });
+
+            // Function to fetch and display users
+            function fetchUsers() {
+                $.get("/api/getAllUsers", function(data) {
+                    $("#users").empty();
+                    data.forEach(user => {
+                        $("#users").append(`<li>${user.name} - ${user.username}</li>`);
+                    });
+                }).fail(function() {
+                    alert("Error fetching users.");
+                });
+            }
+        });
+    </script>
+</body>
+</html>

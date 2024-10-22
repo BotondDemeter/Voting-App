@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",                                 
-    "start": "node dist/app.js",                   
-    "dev": "ts-node-dev src/app.ts",                
-    "dev:build": "npm run build && npm run dev",    
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "ts-node-dev src/app.ts",
+    "dev:build": "npm run build && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -14,11 +14,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "mongoose": "^8.7.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "@types/node": "^22.7.5",
     "ts-node-dev": "^2.0.0",
