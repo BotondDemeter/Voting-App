@@ -1,0 +1,27 @@
+import { useState, useEffect } from 'react';
+import { fetchAllUsers } from '../api'; // Adjust the path based on your structure
+
+const useUser = () => {
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const getUsers = async () => {
+            try {
+                const userData = await fetchAllUsers();
+                setUsers(userData); // Assuming the response is an array of users
+                setLoading(false);
+            } catch (err) {
+                setError(err);
+                setLoading(false);
+            }
+        };
+
+        getUsers();
+    }, []);
+
+    return { users, loading, error };
+};
+
+export default useUser;
