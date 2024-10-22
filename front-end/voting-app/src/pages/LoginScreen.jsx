@@ -1,6 +1,6 @@
 // LoginScreen.jsx
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, FlatList } from 'react-native';
 import useUser from '../hooks/useUser';
 
 const LoginScreen = ({ navigation }) => {
@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
           data={users}
           keyExtractor={user => user._id}
           renderItem={({ item }) => (
-            <Text>{item.name}</Text>
+            <Text>{item.name}, {item.address}</Text>
           )}
         />
       )}

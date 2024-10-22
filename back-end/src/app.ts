@@ -41,7 +41,7 @@ app.use((err: { message: string; status?: string; statusCode?: number }, req: Re
 
 // Start Server
 const port = parseInt(process.env.PORT || '3000', 10);
-const ipAddress = process.env.IP || 'localhost';
+const ipAddress = process.env.IP || '192.168.1.206';
 
 app.listen(port, ipAddress, () => {
   console.log(`Server is running on http://${ipAddress}:${port}`);
