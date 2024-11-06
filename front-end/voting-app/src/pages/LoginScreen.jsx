@@ -1,29 +1,55 @@
-// LoginScreen.jsx
-import React from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
-import useUser from '../hooks/useUser';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import loginStyles from '../assets/loginStyles';
+import stylesForAll from '../assets/stylesForAll';
 
-const LoginScreen = ({ navigation }) => {
-  const { users, loading, error } = useUser();
+
+const LoginScreen = ({navigation}) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const handleLogin = () => {
-    console.log('Login button pressed');
+    console.log("Logging in with:", username, password);
   };
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Welcome to the Voting App!</Text>
-      <Button title="Login" onPress={handleLogin} />
-      {loading && <Text>Loading users...</Text>}
-      {error && <Text>Error: {error.message}</Text>}
 
-      {!loading && !error && (
-        <FlatList
-          data={users}
-          keyExtractor={user => user._id}
-          renderItem={({ item }) => (
-            <Text>{item.name}, {item.address}</Text>
-          )}
-        />
-      )}
+  return (
+    <View style={stylesForAll.container}>
+      <View style={loginStyles.loginBox}>
+        <View style={loginStyles.loginKey}>
+          <Icon name="key" size={40} color="white" />
+        </View>
+        <Text style={loginStyles.loginTitle}>Please log in!</Text>
+
+        <View style={loginStyles.loginForm}>
+          <View style={loginStyles.formGroup}>
+            <Text style={loginStyles.label}>USERNAME</Text>
+            <TextInput 
+              style={loginStyles.input} 
+              value={username} 
+              onChangeText={setUsername} 
+            />
+          </View>
+
+          <View style={loginStyles.formGroup}>
+            <Text style={loginStyles.label}>PASSWORD</Text>
+            <TextInput 
+              style={loginStyles.input} 
+              value={password} 
+              onChangeText={setPassword} 
+              secureTextEntry 
+            />
+          </View>
+
+          <View style={loginStyles.loginButtonContainer}>
+            <TouchableOpacity style={loginStyles.loginButton} onPress={handleLogin}>
+              <Text style={loginStyles.loginButtonText}>LOGIN</Text>
+            </TouchableOpacity>
+            <Text style={loginStyles.register}>
+              Don't have an account? <Text style= {loginStyles.signUp} onPress={() => navigation.navigate('SignUp') }>Sign Up!</Text></Text>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };

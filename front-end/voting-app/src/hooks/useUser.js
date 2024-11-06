@@ -10,7 +10,7 @@ const useUser = () => {
         const getUsers = async () => {
             try {
                 const userData = await fetchAllUsers();
-                setUsers(userData); // Assuming the response is an array of users
+                setUsers(userData);
                 setLoading(false);
             } catch (err) {
                 setError(err);
