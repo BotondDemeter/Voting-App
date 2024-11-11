@@ -1,0 +1,46 @@
+// ./controllers/VotingController 
+import { Request, Response } from 'express';
+import VotingService from '../services/VotingService';
+import { IVoting } from '../models/VotingInterfaces';
+
+const votingService = new VotingService();
+
+class VotingController {
+    // Controller method to create a new voting
+    public async createNewVoting(req: Request, res: Response): Promise<void> {
+        try {
+            const votingData: IVoting = req.body;
+            const newVoting = await votingService.createNewVoting(votingData);
+            res.status(201).json({ message: 'Voting created successfully', data: newVoting });
+        } catch (error: any) {
+            res.status(500).json({ message: 'Failed to create voting', error: error.message });
+        }
+    }
+
+     // Controller method to get all active votings
+    public async getActiveVotings(req: Request, res: Response): Promise<void> {
+        try {
+            const activeVotings = await votingService.getActiveVotings();
+            res.status(200).json({ data: activeVotings });
+        } catch (error: any) {
+            res.status(500).json({ message: 'Failed to retrieve active votings', error: error.message });
+        }
+    }
+
+    // Controller method to set a voting to inactive
+    public async setVotingInactive(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const updatedVoting = await votingService.setVotingInactive(id);
+            if (updatedVoting) {
+                res.status(200).json({ message: 'Voting set to inactive', data: updatedVoting });
+            } else {
+                res.status(404).json({ message: 'Voting not found' });
+            }
+        } catch (error: any) {
+            res.status(500).json({ message: 'Failed to set voting inactive', error: error.message });
+        }
+    }
+}
+
+export default VotingController;

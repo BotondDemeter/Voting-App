@@ -18,5 +18,6 @@ yarn-error.log*
 # Mac system files
 .DS_Store
 
+../DS_Store
 # Optional: Ignore coverage files if using a test coverage tool
 coverage/

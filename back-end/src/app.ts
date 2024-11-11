@@ -2,26 +2,26 @@ import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
+import votingRoutes from './routes/VotingRoutes';
+
 import path from 'path';
+
 
 dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); // Serve static files like index.html
+app.use(express.static('public')); 
 
-// Routes
 app.get('/', (req: Request, res: Response) => {
-  // Serve the index.html file located in the 'public' folder
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.use('/api', userRoutes); // API routes for user management
+app.use('/api', userRoutes);
+app.use('/api/votings', votingRoutes); 
 
-// MongoDB connection
 const mongoUri = process.env.MONGODB_URI || '';
 
 mongoose.connect(mongoUri, { dbName: 'SoftwareRendszerekDatabase' })
