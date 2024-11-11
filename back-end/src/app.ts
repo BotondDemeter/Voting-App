@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
 import votingRoutes from './routes/VotingRoutes';
 
+
 import path from 'path';
 
 
@@ -19,7 +20,9 @@ app.get('/', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.use('/api', userRoutes);
+app.use('/api/auth', userRoutes);
+//app.use('/api/auth', authRoutes);
+
 app.use('/api/votings', votingRoutes); 
 
 const mongoUri = process.env.MONGODB_URI || '';

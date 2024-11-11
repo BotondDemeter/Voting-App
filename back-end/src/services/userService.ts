@@ -19,3 +19,21 @@ export const registerUser = async (userData: { name: string, username: string, c
 export const getAllUsers = async () => {
     return User.find({}, '-password'); // Exclude the password field
 };
+
+export const loginUser = async (username: string, password: string) => {
+    try {
+        const user = await User.findOne({ username });
+        if (!user) {
+            return { message: 'User not found' };
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return { message: 'Invalid password' };
+        }
+
+        return { message: 'Login successful' };
+    } catch (error) {
+        throw new Error("Failed to log in");
+    }
+};
