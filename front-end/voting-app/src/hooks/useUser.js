@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchAllUsers } from '../api'; // Adjust the path based on your structure
+import { fetchAllUsers } from '../api';
 
 const useUser = () => {
     const [users, setUsers] = useState([]);

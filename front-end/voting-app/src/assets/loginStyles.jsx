@@ -2,7 +2,9 @@ import { StyleSheet } from "react-native";
 
 const loginStyles = StyleSheet.create({
       loginBox: {
-        width: '80%',
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: '#1A2226',
         borderRadius: 10,
         padding: 20,
@@ -10,6 +12,7 @@ const loginStyles = StyleSheet.create({
       },
       loginKey: {
         marginBottom: 20,
+        marginTop: 30,
       },
       loginTitle: {
         marginTop: 15,
@@ -18,6 +21,7 @@ const loginStyles = StyleSheet.create({
         letterSpacing: 2,
         fontWeight: 'bold',
         color: '#ECF0F5',
+        marginBottom: 20
       },
       loginForm: {
         marginTop: 25,
@@ -60,7 +64,7 @@ const loginStyles = StyleSheet.create({
       register:{
         color: 'white',
         textAlign: 'left',
-        marginTop: 15
+        marginTop: 20
       },
       signUp:{
         textDecorationLine: 'underline',
