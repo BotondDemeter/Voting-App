@@ -32,7 +32,7 @@ export const loginUser = async (username: string, password: string) => {
             return { message: 'Invalid password' };
         }
 
-        return { message: 'Login successful' };
+        return { state: 'success',message: 'Login successful', data: user };
     } catch (error) {
         throw new Error("Failed to log in");
     }
