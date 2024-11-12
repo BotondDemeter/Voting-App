@@ -1,10 +1,11 @@
+// routes/userRoutes.ts
 import express from 'express';
-import { handleRegister, handleGetAllUsers, handleLogin } from '../controllers/userController';
+import * as userController from '../controllers/userController';
 
 const router = express.Router();
 
-router.post('/register', handleRegister);
-router.get('/getAllUsers', handleGetAllUsers);
-router.post('/login', handleLogin);
+router.post('/login', (req, res, next) => {
+    userController.login(req, res);
+});
 
 export default router;

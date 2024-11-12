@@ -20,20 +20,21 @@ export const getAllUsers = async () => {
     return User.find({}, '-password'); // Exclude the password field
 };
 
-export const loginUser = async (username: string, password: string) => {
-    try {
-        const user = await User.findOne({ username });
-        if (!user) {
-            return { message: 'User not found' };
-        }
+// export const loginUser = async (username: string, password: string) => {
+//     try {
+//         const user = await User.findOne({ username });
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return { message: 'Invalid password' };
-        }
+//         if (!user) {
+//             return { message: 'User not found' };
+//         }
 
-        return { state: 'success',message: 'Login successful', data: user };
-    } catch (error) {
-        throw new Error("Failed to log in");
-    }
-};
+//         const isMatch = await bcrypt.compare(password, user.password);
+//         if (!isMatch) {
+//             return { message: 'Invalid password' };
+//         }
+
+//         res.status(200).json({ message: 'Login successful' });
+//     } catch (error) {
+//         throw new Error("Failed to log in");
+//     }
+// };
