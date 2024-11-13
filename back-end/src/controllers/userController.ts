@@ -4,25 +4,37 @@ import { registerUser, getAllUsers } from '../services/userService';
 import User from '../models/userModel';
 import bcrypt from 'bcrypt';
 
-// export const handleRegister = async (req: Request, res: Response): Promise<Response> => {
-//     try {
-//         const result = await registerUser(req.body);
-//         return res.status(201).json(result);
-//     } catch (error: any) {
-//         return res.status(400).json({ message: error.message });
-//     }
-// };
+export const register = async (req: Request, res: Response) => {
+    try {
+        const { name, username, cnp, address, password, confirmPassword } = req.body;
 
-// export const handleGetAllUsers = async (req: Request, res: Response): Promise<Response> => {
-//     try {
-//         const users = await getAllUsers();
-//         return res.status(200).json(users);
-//     } catch (error: any) {
-//         return res.status(500).json({ message: 'Failed to retrieve users' });
-//     }
-// };
+        if (password !== confirmPassword) {
+            return res.status(400).json({ message: 'Passwords do not match' });
+        }
 
-// controllers/userController.ts
+        const user = await User.findOne({ username });
+
+        if (user) {
+            return res.status(409).json({ message: 'User already exists' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = new User({
+            name,
+            username,
+            cnp,
+            address,
+            password: hashedPassword
+        });
+
+        res.status(201).json({ message: 'User registered successfully' });
+
+    } catch(err){
+        res.status(500).json({message: 'Internal Server Error'});
+    }
+};
+
 export const login = async (req: Request, res: Response) => {
     try {
         const { username, password } = req.body;
@@ -47,12 +59,8 @@ export const login = async (req: Request, res: Response) => {
                 cnp: user.cnp,
                 address: user.address
             }
-        });
-
-        
+        }); 
     } catch (err) {
-       // You can also remove the next parameter here
-       // and handle the error directly
        res.status(500).json({ message: 'Internal Server Error' });
     }
 };
