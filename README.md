@@ -25,3 +25,12 @@ MONGODB_URI=<...>
 
 
 # Front-End Overview
+
+
+## Installation
+1. Clone the repository:
+   git clone <repository-url>
+
+2. npm install
+
+3. npx expo start
