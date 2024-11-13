@@ -9,9 +9,11 @@ This is a voting application that allows organizers to create votings and users 
 1. Clone the repository:
    git clone <repository-url>
 
-2. npm install
+2. cd ./back-end
 
-3. npm run dev
+3. npm install
+
+4. npm run dev
 
 
 ## API Endpoints
@@ -28,8 +30,7 @@ MONGODB_URI=<...>
 
 
 ## Installation
-1. Clone the repository:
-   git clone <repository-url>
+1. cd ./front-end/voting-app
 
 2. npm install
 
