@@ -3,6 +3,8 @@
 ## Project Overview
 This is a voting application that allows organizers to create votings and users to participate by casting their votes. Key features include creating new votings, retrieving active votings, and marking votings as inactive.
 
+# Back-End Overview
+
 ## Installation
 1. Clone the repository:
    git clone <repository-url>
@@ -20,3 +22,6 @@ This is a voting application that allows organizers to create votings and users 
 ## Environment Variables
 Ensure you set up the following environment variables:
 MONGODB_URI=<...>
+
+
+# Front-End Overview
