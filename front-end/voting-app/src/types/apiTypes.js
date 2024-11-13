@@ -7,3 +7,23 @@ export class User {
         this.address = address;
     }
 }
+
+
+export class AuthSuccess {
+    constructor(user) {
+        this.user = user;
+    }
+}
+
+export class AuthError {
+    constructor(message) {
+        this.message = message;
+    }
+}
+
+export class AuthResponse {
+    constructor(success, error) {
+        this.success = success;
+        this.error = error;
+    }
+}
