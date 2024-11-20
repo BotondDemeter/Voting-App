@@ -21,6 +21,8 @@ This is a voting application that allows organizers to create votings and users 
 - **Get Active Votings**: `GET /api/votings/active`
 - **Set Voting Inactive**: `PATCH /api/votings/inactive/:id`
 
+- **Image Processing**: `POST /api/process-image`
+
 ## Environment Variables
 Ensure you set up the following environment variables:
 MONGODB_URI=<...>
