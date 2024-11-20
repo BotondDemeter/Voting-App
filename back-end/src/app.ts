@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
 import votingRoutes from './routes/VotingRoutes';
+import imageRoutes from './routes/imageRoutes';
 
 
 import path from 'path';
@@ -21,9 +22,9 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/auth', userRoutes);
-//app.use('/api/auth', authRoutes);
 
 app.use('/api/votings', votingRoutes); 
+app.use('/api', imageRoutes);
 
 const mongoUri = process.env.MONGODB_URI || '';
 
