@@ -2,12 +2,9 @@ import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
-import votingRoutes from './routes/VotingRoutes';
+import votingRoutes from './routes/VotingRoutes'; // Ensure case sensitivity is correct
 import imageRoutes from './routes/imageRoutes';
-
-
 import path from 'path';
-
 
 dotenv.config();
 
@@ -22,17 +19,18 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.use('/api/auth', userRoutes);
-
 app.use('/api/votings', votingRoutes); 
 app.use('/api', imageRoutes);
 
 const mongoUri = process.env.MONGODB_URI || '';
-
 mongoose.connect(mongoUri, { dbName: 'SoftwareRendszerekDatabase' })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Error connecting to MongoDB:', err));
 
-// Global Error Handler
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
 app.use((err: { message: string; status?: string; statusCode?: number }, req: Request, res: Response, next: NextFunction) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
@@ -43,9 +41,8 @@ app.use((err: { message: string; status?: string; statusCode?: number }, req: Re
   });
 });
 
-// Start Server
 const port = parseInt(process.env.PORT || '3000', 10);
-const ipAddress = process.env.IP || '192.168.1.206';
+const ipAddress = process.env.IP || 'localhost';
 
 app.listen(port, ipAddress, () => {
   console.log(`Server is running on http://${ipAddress}:${port}`);

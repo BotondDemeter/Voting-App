@@ -1,7 +1,165 @@
-const response = await fetch('http://localhost:5000/api/auth/login', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voting App</title>
+  <style>
+    /* Same styles as before */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Voting App</h1>
+    <button id="createVotingBtn" class="button">Create Voting</button>
+    <button id="showAllVotingsBtn" class="button">Show All Votings</button>
+    <button id="showHistoryBtn" class="button">Show Voting History</button>
+
+    <!-- Voting Form -->
+    <div id="votingForm" style="display: none;">
+      <h2>Create New Voting</h2>
+      <!-- Same as before -->
+    </div>
+
+    <!-- Votings List -->
+    <div id="votingsList" style="display: none;">
+      <h2>Active Votings</h2>
+      <div id="votings"></div>
+    </div>
+
+    <!-- Voting History -->
+    <div id="historyList" style="display: none;">
+      <h2>Your Voting History</h2>
+      <div id="history"></div>
+    </div>
+  </div>
+
+  <script>
+    const userId = "1"; // Hardcoded user ID
+
+    // Show active votings
+    document.getElementById('showAllVotingsBtn').addEventListener('click', async () => {
+      document.getElementById('votingForm').style.display = 'none';
+      document.getElementById('historyList').style.display = 'none';
+      document.getElementById('votingsList').style.display = 'block';
+
+      const response = await fetch('/api/votings/active');
+      const data = await response.json();
+
+      const votingsContainer = document.getElementById('votings');
+      votingsContainer.innerHTML = '';
+
+      data.data.forEach(voting => {
+        const votingCard = document.createElement('div');
+        votingCard.className = 'voting-card';
+
+        const votingTitle = document.createElement('div');
+        votingTitle.className = 'voting-title';
+        votingTitle.textContent = voting.name;
+
+        const votingDescription = document.createElement('div');
+        votingDescription.className = 'voting-description';
+        votingDescription.textContent = voting.description;
+
+        const candidatesList = document.createElement('ul');
+        candidatesList.className = 'candidate-list';
+
+        voting.candidates.forEach(candidate => {
+          const candidateItem = document.createElement('li');
+          candidateItem.className = 'candidate-item';
+
+          const candidateName = document.createElement('span');
+          candidateName.className = 'candidate-name';
+          candidateName.textContent = candidate.name;
+
+          const candidateVotes = document.createElement('span');
+          candidateVotes.className = 'candidate-votes';
+          candidateVotes.textContent = `Votes: ${candidate.votes}`;
+
+          const voteButton = document.createElement('button');
+          voteButton.className = 'vote-button';
+          voteButton.textContent = 'Vote';
+          voteButton.addEventListener('click', async () => {
+            try {
+              const voteResponse = await fetch(`/api/votings/vote/${voting._id}/${candidate._id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId }),
+              });
+
+              if (voteResponse.ok) {
+                alert(`Voted for ${candidate.name}`);
+                document.getElementById('showAllVotingsBtn').click(); // Refresh the list
+              } else {
+                alert('Failed to vote.');
+              }
+            } catch (error) {
+              console.error('Error voting:', error);
+            }
+          });
+
+          candidateItem.appendChild(candidateName);
+          candidateItem.appendChild(candidateVotes);
+          candidateItem.appendChild(voteButton);
+          candidatesList.appendChild(candidateItem);
+        });
+
+        votingCard.appendChild(votingTitle);
+        votingCard.appendChild(votingDescription);
+        votingCard.appendChild(candidatesList);
+        votingsContainer.appendChild(votingCard);
+      });
+    });
+
+    // Show voting history
+    document.getElementById('showHistoryBtn').addEventListener('click', async () => {
+      document.getElementById('votingForm').style.display = 'none';
+      document.getElementById('votingsList').style.display = 'none';
+      document.getElementById('historyList').style.display = 'block';
+
+      const response = await fetch(`/api/votings/history/${userId}`);
+      const data = await response.json();
+
+      const historyContainer = document.getElementById('history');
+      historyContainer.innerHTML = '';
+
+      if (data.data.length === 0) {
+        historyContainer.innerHTML = '<p>No voting history found.</p>';
+      } else {
+        data.data.forEach(voting => {
+          const votingCard = document.createElement('div');
+          votingCard.className = 'voting-card';
+
+          const votingTitle = document.createElement('div');
+          votingTitle.className = 'voting-title';
+          votingTitle.textContent = voting.name;
+
+          const candidatesList = document.createElement('ul');
+          candidatesList.className = 'candidate-list';
+
+          voting.candidates.forEach(candidate => {
+            const candidateItem = document.createElement('li');
+            candidateItem.className = 'candidate-item';
+
+            const candidateName = document.createElement('span');
+            candidateName.className = 'candidate-name';
+            candidateName.textContent = candidate.name;
+
+            const candidateVotes = document.createElement('span');
+            candidateVotes.className = 'candidate-votes';
+            candidateVotes.textContent = `Votes: ${candidate.votes}`;
+
+            candidateItem.appendChild(candidateName);
+            candidateItem.appendChild(candidateVotes);
+            candidatesList.appendChild(candidateItem);
+          });
+
+          votingCard.appendChild(votingTitle);
+          votingCard.appendChild(candidatesList);
+          historyContainer.appendChild(votingCard);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

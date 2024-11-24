@@ -6,7 +6,6 @@ import { IVoting } from '../models/VotingInterfaces';
 const votingService = new VotingService();
 
 class VotingController {
-    // Controller method to create a new voting
     public async createNewVoting(req: Request, res: Response): Promise<void> {
         try {
             const votingData: IVoting = req.body;
@@ -17,7 +16,6 @@ class VotingController {
         }
     }
 
-     // Controller method to get all active votings
     public async getActiveVotings(req: Request, res: Response): Promise<void> {
         try {
             const activeVotings = await votingService.getActiveVotings();
@@ -27,7 +25,6 @@ class VotingController {
         }
     }
 
-    // Controller method to set a voting to inactive
     public async setVotingInactive(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params;
@@ -39,6 +36,33 @@ class VotingController {
             }
         } catch (error: any) {
             res.status(500).json({ message: 'Failed to set voting inactive', error: error.message });
+        }
+    }
+
+    public async voteForCandidate(req: Request, res: Response): Promise<void> {
+        try {
+            const { votingId, candidateId } = req.params;
+            const { userId } = req.body; // Assuming userId is sent in the request body
+
+            const updatedVoting = await votingService.voteForCandidate(userId, votingId, candidateId);
+            if (updatedVoting) {
+                res.status(200).json({ message: 'Vote registered successfully', data: updatedVoting });
+            } else {
+                res.status(404).json({ message: 'Voting or candidate not found' });
+            }
+        } catch (error: any) {
+            res.status(500).json({ message: 'Failed to register vote', error: error.message });
+        }
+    }
+
+    public async getUsersVotingHistory(req: Request, res: Response): Promise<void> {
+        try {
+            const { userId } = req.params;
+
+            const userVotingHistory = await votingService.getUsersVotingHistory(userId);
+            res.status(200).json({ data: userVotingHistory });
+        } catch (error: any) {
+            res.status(500).json({ message: 'Failed to retrieve user voting history', error: error.message });
         }
     }
 }

@@ -8,7 +8,6 @@ import numpy as np
 
 pytesseract.pytesseract.tesseract_cmd = r'/opt/homebrew/bin/tesseract'
 
-# Get image path from command-line argument
 if len(sys.argv) < 2:
     print("Error: No input image provided.")
     sys.exit(1)

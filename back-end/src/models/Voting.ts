@@ -6,6 +6,7 @@ import { IVoting, ICandidate } from './VotingInterfaces';
 // Candidate Schema
 const CandidateSchema = new Schema<ICandidate>(
     {
+        _id: { type: Schema.Types.ObjectId, default: () => new mongoose.Types.ObjectId() },
         name: {
             type: String,
             required: true,
@@ -71,6 +72,7 @@ const VotingSchema = new Schema<IVoting>(
             type: Date,
             default: Date.now,
         },
+        voters: { type: [String], default: [] },
     },
     { collection: 'voting' } 
 );
