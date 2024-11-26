@@ -9,12 +9,7 @@ const HomeScreen = () => {
 
   return (
     <View style={homeStyles.container}>
-      <Text>Welcome to the Home Screen!</Text>
-      {user ? (
-        <Text>User: {user.username}, {user.cnp}</Text>  // Show username if user is logged in
-      ) : (
-        <Text>No user data available</Text>  // Handle the case when user is null
-      )}
+      <Text style={homeStyles.text}>Welcome, {user.username}!</Text>
     </View>
   );
 };

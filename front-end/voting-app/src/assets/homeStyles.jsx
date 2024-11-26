@@ -7,6 +7,10 @@ const homeStyles = StyleSheet.create({
             alignItems: 'center',
             backgroundColor: '#1A2226',
         },
+        text:{
+            color: '#ECF0F5',
+            fontSize: 20
+        }
     });
     
 export default homeStyles;

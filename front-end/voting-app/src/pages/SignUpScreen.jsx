@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { 
+    View, Text, TextInput, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, 
+    TouchableWithoutFeedback, Keyboard, Image, StyleSheet 
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import * as ImagePicker from 'expo-image-picker';
+import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import signUpStyles from '../assets/signUpStyles';
 import loginStyles from '../assets/loginStyles';
 
@@ -9,6 +12,7 @@ const SignUpScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [scannedImage, setScannedImage] = useState(null);
 
     const handleSignUp = () => {
         if (password !== confirmPassword) {
@@ -25,23 +29,17 @@ const SignUpScreen = ({ navigation }) => {
         navigation.navigate('Login');
     };
 
-    const openCamera = async () => {
-        // Request camera permissions
-        const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        
-        if (status !== 'granted') {
-            Alert.alert("Permission Denied", "Camera access is required to upload your ID.");
-            return;
-        }
-
-        // Launch the camera
-        const result = await ImagePicker.launchCameraAsync({
-            allowsEditing: true,
+    const handlePickImage = async () => {
+        const result = await launchImageLibraryAsync({
+            mediaTypes: MediaTypeOptions.Images,
+            allowsEditing: false,
             quality: 1,
         });
 
         if (!result.canceled) {
-            console.log("Photo URI: ", result.assets[0].uri);
+            setScannedImage(result.uri);
+        } else {
+            Alert.alert("No image selected", "Please select an image from your gallery.");
         }
     };
 
@@ -49,21 +47,25 @@ const SignUpScreen = ({ navigation }) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <KeyboardAvoidingView 
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={[loginStyles.loginBox, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
-            >
+                style={[loginStyles.loginBox, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
+
                 <View style={loginStyles.loginKey}>
                     <Icon name="key" size={40} color="white" />
                 </View>
                 <Text style={loginStyles.loginTitle}>Sign Up to the Voting App!</Text>
-                
+
+                {/* Image Picker Button */}
                 <View style={signUpStyles.idButtonContainer}>
-                    <TouchableOpacity style={signUpStyles.IdButton} onPress={openCamera}>
+                    <TouchableOpacity 
+                        style={signUpStyles.IdButton} 
+                        onPress={handlePickImage}
+                    >
                         <Icon name="camera" style={signUpStyles.cameraIcon} />
-                        <Text style={loginStyles.loginButtonText}>UPLOAD YOUR ID</Text>
+                        <Text style={loginStyles.loginButtonText}>PICK OR SCAN YOUR ID</Text>
                     </TouchableOpacity>
                 </View>
 
+                {/* Form Inputs */}
                 <View style={loginStyles.loginForm}>
                     <View style={loginStyles.formGroup}>
                         <Text style={loginStyles.label}>ENTER YOUR USERNAME</Text>
@@ -98,11 +100,20 @@ const SignUpScreen = ({ navigation }) => {
                         <TouchableOpacity style={loginStyles.loginButton} onPress={handleSignUp}>
                             <Text style={loginStyles.loginButtonText}>SIGN UP</Text>
                         </TouchableOpacity>
-                            <Text style={loginStyles.register}>
-                                Already have an account? <Text style={loginStyles.signUp} onPress={() => navigation.navigate('Login')}>Log In!</Text>
-                            </Text>
+                        <Text style={loginStyles.register}>
+                            Already have an account? 
+                            <Text style={loginStyles.signUp} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })}>Log In!</Text>
+                        </Text>
                     </View>
                 </View>
+
+                {/* Display the picked image */}
+                {scannedImage && (
+                    <View style={{ marginTop: 20 }}>
+                        <Text>Scanned Document:</Text>
+                        <Image source={{ uri: scannedImage }} style={{ width: 300, height: 400 }} />
+                    </View>
+                )}
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     );

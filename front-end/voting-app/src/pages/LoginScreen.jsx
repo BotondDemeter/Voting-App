@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Alert, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
-import loginStyles from '../assets/loginStyles';  // Assume this is your custom styling
+import loginStyles from '../assets/loginStyles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import useLogin from '../hooks/useLogin';
 
@@ -8,29 +8,33 @@ const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // Destructure the useLogin hook
   const { loginUser, loading, error } = useLogin();
 
-  // Handle the login action
   const handleLogin = async () => {
-    if (!username || !password) {
-      Alert.alert('Error', 'Please enter both username and password');
+    
+    if (!username.trim() || !password.trim()) {
+      Alert.alert('Missing Information', 'Please fill in both username and password.');
       return;
     }
 
-    await loginUser(username, password); // Call the loginUser function
+    const isSuccess = await loginUser(username, password);
 
-    if (error) {
-      Alert.alert('Login Failed', error);
-    } else {
-      // Redirect to the home screen or another screen on successful login
-      navigation.navigate('Home');
+    if (isSuccess) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Home' }],
+      })
+    } else if (error) {
+      Alert.alert('Login Failed', 'The username or password is incorrect.');
     }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={[loginStyles.loginBox, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={[loginStyles.loginBox, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}
+      >
         <View style={loginStyles.loginKey}>
           <Icon name="key" size={40} color="white" />
         </View>
@@ -61,7 +65,7 @@ const LoginScreen = ({ navigation }) => {
             <TouchableOpacity
               style={loginStyles.loginButton}
               onPress={handleLogin}
-              disabled={loading}  // Disable button while loading
+              disabled={loading}
             >
               <Text style={loginStyles.loginButtonText}>
                 {loading ? 'Logging in...' : 'LOG IN'}
@@ -69,7 +73,7 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
             <Text style={loginStyles.register}>
               Don't have an account?{' '}
-              <Text style={loginStyles.signUp} onPress={() => navigation.navigate('SignUp')}>
+              <Text style={loginStyles.signUp} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'SignUp' }] })}>
                 Sign Up!
               </Text>
             </Text>
