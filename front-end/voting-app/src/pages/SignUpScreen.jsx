@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import signUpStyles from '../assets/signUpStyles';
 import loginStyles from '../assets/loginStyles';
+import axios from 'axios';
 
 const SignUpScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -29,19 +30,45 @@ const SignUpScreen = ({ navigation }) => {
         navigation.navigate('Login');
     };
 
+
     const handlePickImage = async () => {
         const result = await launchImageLibraryAsync({
             mediaTypes: MediaTypeOptions.Images,
             allowsEditing: false,
             quality: 1,
         });
-
+    
         if (!result.canceled) {
             setScannedImage(result.uri);
+    
+            // Prepare the image for upload
+            const formData = new FormData();
+            formData.append('image', {
+                uri: result.uri,
+                name: 'document.jpg', // Replace with the actual filename if available
+                type: 'image/jpeg', // Adjust based on the file type
+            });
+    
+            try {
+                const response = await axios.post('http://192.168.1.206:3000/api/process-image', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+    
+                // Log the backend response
+                console.log('Backend response:', response.data);
+    
+                Alert.alert('Success', response.data.message || 'Image processed successfully!');
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                Alert.alert('Error', 'Could not process the image. Please try again later.');
+            }
         } else {
-            Alert.alert("No image selected", "Please select an image from your gallery.");
+            Alert.alert('No image selected', 'Please select an image from your gallery.');
         }
     };
+    
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
