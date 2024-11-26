@@ -57,7 +57,8 @@ export const login = async (req: Request, res: Response) => {
                 name: user.name,
                 username: user.username,
                 cnp: user.cnp,
-                address: user.address
+                address: user.address,
+                type: user.type
             }
         }); 
     } catch (err) {
