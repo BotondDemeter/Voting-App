@@ -13,17 +13,18 @@ const useLogin = () => {
       setError(null);
 
       const response = await login(username, password);
-      console.log('Login API Response:', response);  // Add this log to see the API response
-
       if (response && response.user) {
         const { user } = response;
-        contextLogin(user);  // Use the login function from context
+        contextLogin(user); // Log in the user in the AuthContext
+        return true; // Indicate success
       } else {
         setError('Invalid username or password');
+        return false; // Indicate failure
       }
     } catch (err) {
       console.error('Login Error:', err);
       setError('An error occurred during login');
+      return false; // Indicate failure
     } finally {
       setLoading(false);
     }
