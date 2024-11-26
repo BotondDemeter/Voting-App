@@ -5,11 +5,10 @@ import pytesseract
 import cv2
 import numpy as np
 
-pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
 script_dir = os.path.dirname(os.path.abspath(__file__))
 input_image_path = os.path.join(script_dir, 'test.png')
 output_json_path = os.path.join(script_dir, 'output.json')
+output_text_path = os.path.join(script_dir, 'output.txt')
 
 if not os.path.exists(input_image_path):
     print(f"Error: The file {input_image_path} does not exist.")
@@ -25,9 +24,13 @@ else:
 
     text = pytesseract.image_to_string(processed_img, lang='hun+ron')
 
+    with open(output_text_path, 'w', encoding='utf-8') as text_file:
+        text_file.write(text)
+
+
     patterns = {
         "cnp": r'(\d{13})\s*Nume',
-        "id_number": r'\b([A-Z]{1,2})\s*(\d{6})\b',
+        "id_number": r'\b([A-Z]{2})\s*(?:[a-z]+\s+)?([\d]{6})\b',
         "last_name": r'(\w+)\s*Prenume',
         "first_name": r'First name\s*([\w-]+)',
         "nationality": r'([A-Za-z\s]+)\s*Loc',
@@ -53,7 +56,8 @@ else:
         extracted_data["issue_date"] = validity_match.group(1).strip()
         extracted_data["expiration_date"] = validity_match.group(2).strip()
 
+    # Write to output.json
     with open(output_json_path, 'w', encoding='utf-8') as json_file:
         json.dump(extracted_data, json_file, ensure_ascii=False, indent=4)
 
-    print("Data successfully extracted and saved to output.json")
+    print("Data successfully extracted and saved to output.json and output.txt")
