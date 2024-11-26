@@ -6,6 +6,7 @@ export interface IUserModel extends mongoose.Document {
     cnp: string;
     address: string;
     password: string;
+    type: string;
 }
 
 // Define User Schema
@@ -15,7 +16,8 @@ const userSchema: Schema<IUserModel> = new mongoose.Schema(
         username: { type: String, required: true, unique: true },
         cnp: { type: String, required: true, unique: true },
         address: { type: String, required: true },
-        password: { type: String, required: true }
+        password: { type: String, required: true },
+        type: { type: String, required: true },
     },
     { collection: 'user' }  // Specify the collection name here 
 );
