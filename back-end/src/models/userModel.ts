@@ -17,7 +17,7 @@ const userSchema: Schema<IUserModel> = new mongoose.Schema(
         address: { type: String, required: true },
         password: { type: String, required: true }
     },
-    { collection: 'user' }  // Specify the collection name here
+    { collection: 'user' }  // Specify the collection name here 
 );
 
 // Define and export User model with IUserModel
