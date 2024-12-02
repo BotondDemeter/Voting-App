@@ -3,9 +3,15 @@ import React, { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import AuthStack from './AuthStack'; 
 import AppStack from './AppStack';
+import { NavigationContainer } from '@react-navigation/native';
+import { BottomNavigation } from 'react-native-paper';
 
-export default function AppNavigator() {
-  const { isAuthenticated } = useContext(AuthContext);
+const AppNavigator = () => {
+  return (
+    <NavigationContainer>
+      {isAuthenticated ? <BottomNavigation /> : <AuthStack />}
+    </NavigationContainer>
+  );
+};
 
-  return isAuthenticated ? <AppStack /> : <AuthStack />;
-}
+export default AppNavigator;

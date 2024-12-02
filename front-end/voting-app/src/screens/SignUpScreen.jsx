@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     View, Text, TextInput, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, 
-    TouchableWithoutFeedback, Keyboard, Image, StyleSheet 
-} from 'react-native';
+    TouchableWithoutFeedback, Keyboard, Image, SafeAreaView, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import signUpStyles from '../assets/signUpStyles';
@@ -14,6 +13,7 @@ const SignUpScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [scannedImage, setScannedImage] = useState(null);
+    const [apiResponse, setApiResponse] = useState(null);
 
     const handleSignUp = () => {
         if (password !== confirmPassword) {
@@ -32,50 +32,61 @@ const SignUpScreen = ({ navigation }) => {
 
 
     const handlePickImage = async () => {
-        const result = await launchImageLibraryAsync({
-            mediaTypes: MediaTypeOptions.Images,
-            allowsEditing: false,
-            quality: 1,
-        });
-    
-        if (!result.canceled) {
-            setScannedImage(result.uri);
-    
-            // Prepare the image for upload
-            const formData = new FormData();
-            formData.append('image', {
-                uri: result.uri,
-                name: 'document.jpg', // Replace with the actual filename if available
-                type: 'image/jpeg', // Adjust based on the file type
+        try {
+            const result = await launchImageLibraryAsync({
+                mediaTypes: MediaTypeOptions.Images,
+                allowsEditing: false,
+                quality: 1,
             });
-    
-            try {
+
+            console.log('Image picker result:', result);
+
+            if (!result.canceled && result.assets && result.assets.length > 0) {
+                const selectedAsset = result.assets[0];
+                console.log('Selected image URI:', selectedAsset.uri);
+
+                setScannedImage(selectedAsset.uri);
+
+                // Prepare FormData for API call
+                const formData = new FormData();
+                formData.append('image', {
+                    uri: selectedAsset.uri,
+                    name: 'document.jpg', // Adjust if needed
+                    type: 'image/jpeg', // Adjust based on file type
+                });
+
+                // Call the API
                 const response = await axios.post('http://192.168.1.206:3000/api/process-image', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-    
-                // Log the backend response
-                console.log('Backend response:', response.data);
-    
-                Alert.alert('Success', response.data.message || 'Image processed successfully!');
-            } catch (error) {
-                console.error('Error uploading image:', error);
-                Alert.alert('Error', 'Could not process the image. Please try again later.');
+
+                console.log('API response:', response.data);
+
+                setApiResponse(response.data);
+                navigation.navigate('CompleteSignUp', { apiResponse: response.data });
+            } else {
+                console.log('No image selected or operation was canceled.');
+                Alert.alert('No Image', 'You did not select any image.');
             }
-        } else {
-            Alert.alert('No image selected', 'Please select an image from your gallery.');
+        } catch (error) {
+            console.error('Error selecting or uploading image:', error);
+            Alert.alert('Error', 'An error occurred while selecting or uploading the image.');
         }
     };
     
 
     return (
+        <SafeAreaView style={{ flex: 1 }}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <KeyboardAvoidingView 
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={[loginStyles.loginBox, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
-
+                          <ScrollView
+            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}
+            keyboardShouldPersistTaps="handled"
+          >
                 <View style={loginStyles.loginKey}>
                     <Icon name="key" size={40} color="white" />
                 </View>
@@ -141,8 +152,10 @@ const SignUpScreen = ({ navigation }) => {
                         <Image source={{ uri: scannedImage }} style={{ width: 300, height: 400 }} />
                     </View>
                 )}
+                </ScrollView>
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
+        </SafeAreaView>
     );
 };
 
