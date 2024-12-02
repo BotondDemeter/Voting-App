@@ -1,10 +1,9 @@
 import express from 'express';
-import multer from 'multer';
-import { processImage } from '../controllers/imageController';
+import { imageProcess, uploadMiddleware } from '../controllers/imageController';
 
 const router = express.Router();
-const upload = multer({ dest: 'uploads/' });
 
-router.post('/process-image', upload.single('image'), processImage);
+// Route for image processing
+router.post('/process-image', uploadMiddleware, imageProcess);
 
 export default router;
