@@ -188,7 +188,7 @@ This is a voting application that allows organizers to create votings and users 
     ```json
     {
       "message": "Image processed successfully",
-      "data": { /* Updated Voting Object */ }
+      "data": { /* Python script result */ }
     }
     ```
   - **Errors**:
@@ -201,7 +201,7 @@ This is a voting application that allows organizers to create votings and users 
       { "message": "No image provided." }
       ```
 
-      
+
 
 ## Environment Variables
 Ensure you set up the following environment variables:
