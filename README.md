@@ -174,7 +174,34 @@ This is a voting application that allows organizers to create votings and users 
       { "message": "Failed to fetch user voting history." }
       ```
       
-- **Image Processing**: `POST /api/process-image`
+### **6. Image Processing**: 
+- **Endpoint**: `POST /api/process-image`
+- **Description**: process image
+- **Request Body**:
+  ```json
+  {
+    "image": "base64 encoded image"
+  }
+  ```
+- **Response**:
+  - **Success**:
+    ```json
+    {
+      "message": "Image processed successfully",
+      "data": { /* Updated Voting Object */ }
+    }
+    ```
+  - **Errors**:
+    - `500`: Failed to process the image.
+      ```json
+       { "message": "Error processing the image." }
+      ```
+    - `400`: No image provided.
+      ```json
+      { "message": "No image provided." }
+      ```
+
+      
 
 ## Environment Variables
 Ensure you set up the following environment variables:
