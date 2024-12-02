@@ -6,62 +6,67 @@ import bcrypt from 'bcrypt';
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { name, username, cnp, address, password, confirmPassword } = req.body;
+        const { cnp, first_name, id_number, last_name, nationality, password, confirmPassword } = req.body;
 
         if (password !== confirmPassword) {
             return res.status(400).json({ message: 'Passwords do not match' });
         }
 
-        const user = await User.findOne({ username });
+        const existingUser = await User.findOne({ cnp });
 
-        if (user) {
+        if (existingUser) {
             return res.status(409).json({ message: 'User already exists' });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
-            name,
-            username,
             cnp,
-            address,
-            password: hashedPassword
+            first_name,
+            id_number,
+            last_name,
+            nationality,
+            password: hashedPassword,
         });
 
-        res.status(201).json({ message: 'User registered successfully' });
+        await newUser.save();
 
-    } catch(err){
-        res.status(500).json({message: 'Internal Server Error'});
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 };
 
 export const login = async (req: Request, res: Response) => {
     try {
-        const { username, password } = req.body;
+        const { id_number, password } = req.body;
 
-        const user = await User.findOne({ username });
+        // Find the user by id_number
+        const user = await User.findOne({ id_number });
 
         if (!user) {
             return res.status(400).json({ message: 'User not found' });
         }
 
+        // Check if the password matches
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
         if (!isPasswordValid) {
             return res.status(400).json({ message: 'Invalid password' });
         }
 
+        // Respond with user details on successful login
         res.status(200).json({ 
             message: 'Login successful',
-            user :{
-                name: user.name,
-                username: user.username,
+            user: {
+                id_number: user.id_number,
+                first_name: user.first_name,
+                last_name: user.last_name,
                 cnp: user.cnp,
-                address: user.address,
-                type: user.type
+                nationality: user.nationality,
             }
         }); 
     } catch (err) {
-       res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 };

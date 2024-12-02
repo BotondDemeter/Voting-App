@@ -17,6 +17,70 @@ This is a voting application that allows organizers to create votings and users 
 
 ## API Endpoints
 
+### **Register User**
+- **Endpoint**: `POST /api/auth/register`
+- **Description**: Registers a new user.
+- **Request Body**:
+  - `first_name` (string): The first name of the user.
+  - `last_name` (string): The last name of the user.
+  - `id_number` (string): The ID number of the user.
+  - `cnp` (string): The CNP of the user.
+  - `nationality` (string): The nationality of the user.
+  - `password` (string): The password of the user.
+  - `confirmPassword` (string): The password confirmation of the user.
+- **Response**:
+  - **Success**:
+    ```json
+    {
+      "message": "User registered successfully",
+      "data": { /* User Object */ }
+    }
+    ```
+  - **Errors**:
+    - `400`: Invalid password.
+      ```json
+      { "message": "Passwords do not match" }
+      ```
+    - `409`: User already exists.
+      ```json
+      { "message": "User already exists." }
+      ```
+    - `500`: Failed to register the user.
+      ```json
+      { "message": "Internal Server Error." }
+      ```
+
+
+### **Login User**
+
+- **Endpoint**: `POST /api/auth/login`
+- **Description**: Logs in a user.
+- **Request Body**:
+  - `id_number` (string): The ID number of the user.
+  - `password` (string): The password of the user.
+
+- **Response**:
+  - **Success**:
+    ```json
+    {
+      "message": "User logged in successfully",
+      "data": { /* User Object */ }
+    }
+    ```
+  - **Errors**:
+    - `400`: Invalid password.
+      ```json
+      { "message": "Invalid password." }
+      ```
+    - `400`: User not found.
+      ```json
+      { "message": "User not found." }
+      ```
+    - `500`: Failed to log in the user.
+      ```json
+      { "message": "Internal Server Error." }
+      ```
+
 ### **1. Create Voting**
 - **Endpoint**: `POST /api/votings/create`
 - **Description**: Creates a new voting.

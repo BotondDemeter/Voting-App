@@ -4,8 +4,7 @@ import { runPythonScript } from '../services/imageService';
 
 const upload = multer();
 
-// Exported function for image processing
-// Middleware for file upload
+
 export const imageProcess = async (req: Request, res: Response): Promise<void> => {
     try {
         if (!req.file) {
@@ -14,7 +13,6 @@ export const imageProcess = async (req: Request, res: Response): Promise<void> =
             return;
         }
 
-        // Log the file details
         console.log('Uploaded file details:', req.file);
 
         const imageBuffer = req.file.buffer;

@@ -1,28 +1,29 @@
 import mongoose, { Schema, Model } from 'mongoose';
 
+// Define the IUserModel interface
 export interface IUserModel extends mongoose.Document {
-    name: string;
-    username: string;
+    first_name: string;
+    last_name: string;
+    id_number: string;
     cnp: string;
-    address: string;
+    nationality: string;
     password: string;
-    type: string;
 }
 
-// Define User Schema
+// Define the User Schema
 const userSchema: Schema<IUserModel> = new mongoose.Schema(
     {
-        name: { type: String, required: true },
-        username: { type: String, required: true, unique: true },
+        first_name: { type: String, required: true },
+        last_name: { type: String, required: true },
+        id_number: { type: String, required: true, unique: true },
         cnp: { type: String, required: true, unique: true },
-        address: { type: String, required: true },
+        nationality: { type: String, required: true },
         password: { type: String, required: true },
-        type: { type: String, required: true },
     },
-    { collection: 'user' }  // Specify the collection name here 
+    { collection: 'user' } // Specify the collection name
 );
 
-// Define and export User model with IUserModel
+// Define and export the User model
 const User: Model<IUserModel> = mongoose.model<IUserModel>('User', userSchema);
 
 export default User;
