@@ -265,6 +265,113 @@ This is a voting application that allows organizers to create votings and users 
       { "message": "No image provided." }
       ```
 
+### **7. Get All Cities**
+- **Endpoint**: `GET /api/cities`
+- **Description**: get all cities.
+- **Response**:
+  - **Success**:
+    ```json
+    {
+      "data": [
+        {
+          "_id": "mongodb_id",
+          "name": "city_name"
+        },
+        {
+          "_id": "mongodb_id",
+          "name": "another_city_name"
+        }
+      ]
+    }
+    ```
+  - **Errors**:
+    - `500`: Failed to retrieve cities.
+      ```json
+      { "message": "Failed to fetch cities." }
+      ```
+
+### **8. Insert City**
+- **Endpoint**: `POST /api/cities`
+- **Description**: insert a new city.
+- **Request Body**:
+  ```json
+  {
+    "name": "city_name"
+  }
+  ```
+- **Response**:
+  - **Success**:
+    ```json
+    {
+      "message": "City added successfully",
+      "data": { /* City Object */ }
+    }
+    ```
+  - **Errors**:
+    - `500`: Failed to add the city.
+      ```
+      { "message": "Failed to add the city." }
+      ```
+    - `400`: City already exists.
+      ```
+      { "message": "City already exists." }
+      ```
+
+
+### **9. Get All Counties**
+
+- **Endpoint**: `GET /api/counties`
+- **Description**: get all counties.
+- **Response**:
+  - **Success**:
+    ```json
+    {
+      "data": [
+        {
+          "_id": "mongodb_id",
+          "name": "county_name"
+        },
+        {
+          "_id": "mongodb_id",
+          "name": "another_county_name"
+        }
+      ]
+    }
+    ```
+  - **Errors**:
+    - `500`: Failed to retrieve counties.
+      ```json
+      { "message": "Failed to fetch counties." }
+      ```
+
+### **10. Insert County**
+
+- **Endpoint**: `POST /api/counties`
+- **Description**: insert a new county.
+- **Request Body**:
+  ```json
+  {
+    "name": "county_name"
+  }
+  ```
+- **Response**:
+  - **Success**:
+    ```json
+    {
+      "message": "County added successfully",
+      "data": { /* County Object */ }
+    }
+    ```
+  - **Errors**:
+    - `500`: Failed to add the county.
+      ```
+      { "message": "Failed to add the county." }
+      ```
+    - `400`: County already exists.
+      ```
+      { "message": "County already exists." }
+      ```
+
 
 
 ## Environment Variables
