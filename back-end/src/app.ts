@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
 import votingRoutes from './routes/VotingRoutes'; // Ensure case sensitivity is correct
 import imageRoutes from './routes/imageRoutes';
+import countyRoutes from './routes/countyRoutes';
+import cityRoutes from './routes/cityRoutes';
+
 import path from 'path';
 
 dotenv.config();
@@ -21,6 +24,8 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth', userRoutes);
 app.use('/api/votings', votingRoutes); 
 app.use('/api', imageRoutes);
+app.use('/api', countyRoutes);
+app.use('/api', cityRoutes);
 
 const mongoUri = process.env.MONGODB_URI || '';
 mongoose.connect(mongoUri, { dbName: 'SoftwareRendszerekDatabase' })
