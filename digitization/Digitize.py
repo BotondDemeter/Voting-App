@@ -10,6 +10,7 @@ input_image_path = os.path.join(script_dir, 'test2.png')
 output_json_path = os.path.join(script_dir, 'output.json')
 output_text_path = os.path.join(script_dir, 'output.txt')
 
+
 if not os.path.exists(input_image_path):
     print(f"Error: The file {input_image_path} does not exist.")
 else:
@@ -20,9 +21,9 @@ else:
         "first_name": r'First name\s*([\w-]+)',
         "nationality": r'([A-Za-z\s]+)\s*Loc',
         "birth_county": r'Jud\.([A-Z]{2})\s*Mun\.',
-        "birth_city": r'Mun\.([^\n]+)',
+        "birth_city": r'(?:Mun|Ors|Orș)\.([^\n]+)',
         "county": r'Address\s*(?:\n\s*)*Jud\.([A-Z]{2})',
-        "city": r'Address(?:[\s\S]*?)Jud\.[A-Za-z]+.*?Mun\.([^\n]+)',
+        "city": r'Address(?:[\s\S]*?)(?:Jud\.[A-Za-z]+.*?)(?:Mun|Ors|Orș)\.([^\n]+)',
         "issue_date": r'(\d{2}\.\d{2}\.\d{2})',
         "expiration_date": r'(\d{2}\.\d{2}\.\d{4})'
     }
