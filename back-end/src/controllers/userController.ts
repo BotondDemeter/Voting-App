@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { cnp, first_name, id_number, last_name, nationality, county , city , password, confirmPassword } = req.body;
+        const { cnp, first_name, id_number, last_name, nationality, county, city, password, confirmPassword} = req.body;
 
         console.log('Incoming data:', req.body);
 
