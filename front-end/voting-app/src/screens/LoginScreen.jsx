@@ -5,19 +5,19 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import useLogin from '../hooks/useLogin';
 
 const LoginScreen = ({ navigation }) => {
-  const [username, setUsername] = useState('');
+  const [id_number, setid_number] = useState('');
   const [password, setPassword] = useState('');
 
   const { loginUser, loading, error } = useLogin();
 
   const handleLogin = async () => {
     
-    if (!username.trim() || !password.trim()) {
+    if (!id_number.trim() || !password.trim()) {
       Alert.alert('Missing Information', 'Please fill in both username and password.');
       return;
     }
 
-    const isSuccess = await loginUser(username, password);
+    const isSuccess = await loginUser(id_number, password);
 
     if (isSuccess) {
       navigation.reset({
@@ -42,11 +42,11 @@ const LoginScreen = ({ navigation }) => {
 
         <View style={loginStyles.loginForm}>
           <View style={loginStyles.formGroup}>
-            <Text style={loginStyles.label}>USERNAME</Text>
+            <Text style={loginStyles.label}>ID NUMBER</Text>
             <TextInput
               style={loginStyles.input}
-              value={username}
-              onChangeText={setUsername}
+              value={id_number}
+              onChangeText={setid_number}
               autoCapitalize="none"
             />
           </View>

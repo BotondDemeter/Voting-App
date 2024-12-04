@@ -7,12 +7,12 @@ const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const loginUser = async (username, password) => {
+  const loginUser = async (id_number, password) => {
     try {
       setLoading(true);
       setError(null);
 
-      const response = await login(username, password);
+      const response = await login(id_number, password);
       if (response && response.user) {
         const { user } = response;
         contextLogin(user); // Log in the user in the AuthContext
@@ -29,6 +29,8 @@ const useLogin = () => {
       setLoading(false);
     }
   };
+
+
 
   return { loading, error, loginUser };
 };

@@ -9,9 +9,6 @@ import loginStyles from '../assets/loginStyles';
 import axios from 'axios';
 
 const SignUpScreen = ({ navigation }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [scannedImage, setScannedImage] = useState(null);
     const [apiResponse, setApiResponse] = useState(null);
 
@@ -78,84 +75,38 @@ const SignUpScreen = ({ navigation }) => {
     
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{ flex: 1}}>
             <KeyboardAvoidingView 
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={[loginStyles.loginBox, { flex: 1, justifyContent: 'center', alignItems: 'center' }]}>
-                          <ScrollView
-            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}
-            keyboardShouldPersistTaps="handled"
-          >
+                style={[loginStyles.loginBox]}>
+            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center'}} keyboardShouldPersistTaps="handled">
                 <View style={loginStyles.loginKey}>
                     <Icon name="key" size={40} color="white" />
                 </View>
                 <Text style={loginStyles.loginTitle}>Sign Up to the Voting App!</Text>
 
-                {/* Image Picker Button */}
                 <View style={signUpStyles.idButtonContainer}>
                     <TouchableOpacity 
                         style={signUpStyles.IdButton} 
                         onPress={handlePickImage}
                     >
                         <Icon name="camera" style={signUpStyles.cameraIcon} />
-                        <Text style={loginStyles.loginButtonText}>PICK OR SCAN YOUR ID</Text>
+                        <Text style={signUpStyles.IdButtonText}>SELECT A PICTURE OF YOUR ID</Text>
                     </TouchableOpacity>
                 </View>
-
-                {/* Form Inputs */}
                 <View style={loginStyles.loginForm}>
-                    <View style={loginStyles.formGroup}>
-                        <Text style={loginStyles.label}>ENTER YOUR USERNAME</Text>
-                        <TextInput
-                            style={loginStyles.input}
-                            value={username}
-                            onChangeText={setUsername}
-                        />
-                    </View>
 
-                    <View style={loginStyles.formGroup}>
-                        <Text style={loginStyles.label}>SET A PASSWORD</Text>
-                        <TextInput
-                            style={loginStyles.input}
-                            value={password}
-                            onChangeText={setPassword}
-                            secureTextEntry
-                        />
-                    </View>
-
-                    <View style={loginStyles.formGroup}>
-                        <Text style={loginStyles.label}>CONFIRM YOUR PASSWORD</Text>
-                        <TextInput
-                            style={loginStyles.input}
-                            value={confirmPassword}
-                            onChangeText={setConfirmPassword}
-                            secureTextEntry
-                        />
-                    </View>
+                   
 
                     <View style={loginStyles.loginButtonContainer}>
-                        <TouchableOpacity style={loginStyles.loginButton} onPress={handleSignUp}>
-                            <Text style={loginStyles.loginButtonText}>SIGN UP</Text>
-                        </TouchableOpacity>
-                        <Text style={loginStyles.register}>
-                            Already have an account? 
+                        <Text style={loginStyles.register}>Already have an account? 
                             <Text style={loginStyles.signUp} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })}>Log In!</Text>
                         </Text>
                     </View>
                 </View>
-
-                {/* Display the picked image */}
-                {scannedImage && (
-                    <View style={{ marginTop: 20 }}>
-                        <Text>Scanned Document:</Text>
-                        <Image source={{ uri: scannedImage }} style={{ width: 300, height: 400 }} />
-                    </View>
-                )}
                 </ScrollView>
             </KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
-        </SafeAreaView>
+        </View>
     );
 };
 
