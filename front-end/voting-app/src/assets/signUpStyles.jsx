@@ -2,24 +2,31 @@ import { StyleSheet } from "react-native";
 
 const signUpStyles = StyleSheet.create({
     idButtonContainer: {
-        marginTop: 1,
-        alignSelf: 'left',
+        marginTop: 20,
+        alignSelf: 'center',
     },
     IdButton:{
         flexDirection: 'row',
-        padding: 10,
+        padding: 40,
         borderRadius: 5,
         borderColor: '#0DB8DE',
         borderRadius: 0,
         fontWeight: 'bold',
         color: '0DB8DE',
         borderWidth: 1,
-        alignItems: 'center'    
+        alignItems: 'center'
     },
     cameraIcon:{
         color: '#007bff',
-        marginRight: 8
-    }
+        marginRight: 8,
+        alignItems: 'center'
+    },
+    IdButtonText: {
+        color: '#007bff',
+        fontWeight: 'bold',
+        alignItems: 'center',
+        fontSize: 14
+    },
 });
 
 export default signUpStyles;

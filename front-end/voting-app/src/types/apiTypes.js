@@ -1,10 +1,11 @@
 export class User {
-    constructor(_id, name, userName, cnp, address, type) {
+    constructor(_id, first_name, last_name, id_number, cnp, nationality, type) {
         this._id = _id;
-        this.name = name;
-        this.userName = userName;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.id_number = id_number;
         this.cnp = cnp;
-        this.address = address;
+        this.nationality = nationality;
         this.type = type;
     }
 }

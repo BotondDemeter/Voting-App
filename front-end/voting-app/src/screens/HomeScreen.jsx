@@ -9,7 +9,7 @@ const HomeScreen = () => {
   const { user } = useAuth();
   return (
     <SafeAreaView style={homeStyles.container}>
-      <Text style={homeStyles.text}>Welcome, {user.username}!, {user.type}</Text>
+      <Text style={homeStyles.text}>Welcome, {user.first_name}!, {user.type}</Text>
     </SafeAreaView>
   );
 };
