@@ -1,6 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose';
 
-// Define the IUserModel interface
+// Define the IserModel interface
 export interface IUserModel extends mongoose.Document {
     first_name: string;
     last_name: string;
@@ -8,9 +8,11 @@ export interface IUserModel extends mongoose.Document {
     cnp: string;
     nationality: string;
     password: string;
+    type: string;
+    county: string;
+    city: string;
 }
 
-// Define the User Schema
 const userSchema: Schema<IUserModel> = new mongoose.Schema(
     {
         first_name: { type: String, required: true },
@@ -19,11 +21,13 @@ const userSchema: Schema<IUserModel> = new mongoose.Schema(
         cnp: { type: String, required: true, unique: true },
         nationality: { type: String, required: true },
         password: { type: String, required: true },
+        type: { type: String, required: true },
+        county: { type: String, required: true },
+        city: { type: String, required: true },
     },
-    { collection: 'user' } // Specify the collection name
+    { collection: 'user' }
 );
 
-// Define and export the User model
 const User: Model<IUserModel> = mongoose.model<IUserModel>('User', userSchema);
 
 export default User;

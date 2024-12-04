@@ -1,22 +1,39 @@
 // controllers/userController.ts
 import { Request, Response, NextFunction } from 'express';
-import { registerUser, getAllUsers } from '../services/userService';
+
 import User from '../models/userModel';
+import { City } from '../models/cityModel';
+import { County } from '../models/countyModel';
 import bcrypt from 'bcrypt';
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { cnp, first_name, id_number, last_name, nationality, password, confirmPassword } = req.body;
+        const { cnp, first_name, id_number, last_name, nationality, county , city , password, confirmPassword } = req.body;
+
+        console.log('Incoming data:', req.body);
 
         if (password !== confirmPassword) {
             return res.status(400).json({ message: 'Passwords do not match' });
         }
 
         const existingUser = await User.findOne({ cnp });
-
         if (existingUser) {
             return res.status(409).json({ message: 'User already exists' });
         }
+
+
+
+        // let newCounty  = await County.findOne({ name: county });
+        // if (!county) {
+        //     newCounty = new County({ name: county });
+        //     await newCounty.save();
+        // }
+
+        // let newCity = await City.findOne({ name: city });
+        // if (!city) {
+        //     newCity = new City({ name: city});
+        //     await newCity.save();
+        // }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -27,12 +44,16 @@ export const register = async (req: Request, res: Response) => {
             last_name,
             nationality,
             password: hashedPassword,
+            type: 'ORGANIZER',
+            county,
+            city
         });
 
         await newUser.save();
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
+        console.error('Error in register:', err);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
