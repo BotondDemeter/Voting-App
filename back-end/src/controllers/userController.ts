@@ -8,7 +8,7 @@ import bcrypt from 'bcrypt';
 
 export const register = async (req: Request, res: Response) => {
     try {
-        const { cnp, first_name, id_number, last_name, nationality, county , city , password, confirmPassword } = req.body;
+        const { cnp, first_name, id_number, last_name, nationality, county, city, password, confirmPassword} = req.body;
 
         console.log('Incoming data:', req.body);
 
@@ -80,11 +80,16 @@ export const login = async (req: Request, res: Response) => {
         res.status(200).json({ 
             message: 'Login successful',
             user: {
+                _id: user._id,
                 id_number: user.id_number,
                 first_name: user.first_name,
                 last_name: user.last_name,
                 cnp: user.cnp,
                 nationality: user.nationality,
+                type: user.type,
+                county: user.county,
+                city: user.city
+            
             }
         }); 
     } catch (err) {

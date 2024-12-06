@@ -4,8 +4,8 @@ import { cityController } from '../controllers/cityController';
 
 const router = express.Router();
 
-router.get('/cities', cityController.getAllCities);
+router.get('/getCities', cityController.getAllCities);
 
-router.post('/cities', cityController.insertCity);
+router.post('/insertCity', cityController.insertCity);
 
 export default router;
