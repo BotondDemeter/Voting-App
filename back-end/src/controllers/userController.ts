@@ -80,11 +80,16 @@ export const login = async (req: Request, res: Response) => {
         res.status(200).json({ 
             message: 'Login successful',
             user: {
+                _id: user._id,
                 id_number: user.id_number,
                 first_name: user.first_name,
                 last_name: user.last_name,
                 cnp: user.cnp,
                 nationality: user.nationality,
+                type: user.type,
+                county: user.county,
+                city: user.city
+            
             }
         }); 
     } catch (err) {

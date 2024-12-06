@@ -29,3 +29,56 @@ export class AuthResponse {
         this.error = error;
     }
 }
+
+export class Candidate {
+    constructor(_id, name, description = '', party = null, votes = 0) {
+        this._id = _id;
+        this.name = name;
+        this.description = description;
+        this.party = party;
+        this.votes = votes;
+    }
+}
+
+export class Voting {
+    constructor(
+        name,
+        description = '',
+        isActive = true,
+        region,
+        regionName,
+        candidates = [],
+        totalVotes = 0,
+        startDate,
+        endDate,
+        createdAt = new Date(),
+        voters = []
+    ) {
+        this.name = name;
+        this.description = description;
+        this.isActive = isActive;
+        this.region = region;
+        this.regionName = regionName;
+        this.candidates = candidates.map(candidate => new Candidate(...Object.values(candidate)));
+        this.totalVotes = totalVotes;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createdAt = createdAt;
+        this.voters = voters;
+    }
+}
+
+export class County {
+    constructor(_id, name) {
+        this._id = _id;
+        this.name = name;
+    }
+}
+
+export class City {
+    constructor(_id, name, county) {
+        this._id = _id;
+        this.name = name;
+        this.county = county;
+    }
+}
