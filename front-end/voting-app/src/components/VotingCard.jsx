@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native
 import { useAuth } from '../context/AuthContext';
 
 const VotingCard = ({ voting, onDetailsPress }) => {
-    const { user } = useAuth();  // Current user
+    const { user } = useAuth();  
 
     const hasVoted = voting.voters.includes(user._id);
 
@@ -50,7 +50,7 @@ const VotingCard = ({ voting, onDetailsPress }) => {
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: '#212121',  // Darker background for the card
+        backgroundColor: '#212121',  
         padding: 20,
         marginVertical: 10,
         marginHorizontal: 16,

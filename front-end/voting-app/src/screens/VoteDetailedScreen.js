@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Alert, FlatList, Button, StyleSheet } from 'react-native';
+import { View, Text, Alert, FlatList, Button, StyleSheet, LogBox } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useVoting from '../hooks/useVoting';
 import { useAuth } from '../context/AuthContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const VoteDetailedScreen = () => {
     const navigation = useNavigation();
     const route = useRoute();
-    const { _id } = route.params;  // Voting ID
+    const { _id } = route.params;
     const { fetchVotingById, voteForCandidate } = useVoting();
-    const { user } = useAuth(); // Current user
+    const { user } = useAuth();
+
+    useEffect(() => {
+        LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    }, []);
 
     const [voting, setVoting] = useState(null);
 
@@ -39,6 +42,16 @@ const VoteDetailedScreen = () => {
             console.error('Vote error:', error);
             Alert.alert('Error', 'Failed to register your vote.');
         }
+    };
+
+    const getWinner = () => {
+        if (!voting.isActive) {
+            const winner = voting.candidates.reduce((prev, current) => {
+                return (prev.votes > current.votes) ? prev : current;
+            }, {});
+            return winner.name; 
+        }
+        return 'No Winner yet';  
     };
 
     if (!voting) {
@@ -84,7 +97,11 @@ const VoteDetailedScreen = () => {
                         )}
                     </View>
                 )}
-                ListFooterComponent={<View style={{ height: 100 }} />}
+                ListFooterComponent={
+                    <View style={styles.footer}>
+                        <Text style={styles.winnerLabel}>Winner: {getWinner()}</Text>
+                    </View>
+                }
                 contentContainerStyle={styles.listContent}
             />
         </SafeAreaView>
@@ -98,9 +115,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: '#1A2226',
-    },
-    scrollContainer: {
-        paddingBottom: 100,
     },
     loadingText: {
         fontSize: 18,
@@ -144,21 +158,30 @@ const styles = StyleSheet.create({
     candidateContainer: {
         marginBottom: 15,
         padding: 15,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#2A2E36',
         borderRadius: 8,
         elevation: 2,
     },
     candidateName: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#333',
+        color: '#fff',
     },
     candidateDescription: {
         fontSize: 14,
-        color: '#777',
+        color: '#fff',
         marginVertical: 10,
     },
     listContent: {
         paddingBottom: 50,
+    },
+    footer: {
+        paddingVertical: 20,
+    },
+    winnerLabel: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#F9AA33',
+        textAlign: 'center',
     },
 });

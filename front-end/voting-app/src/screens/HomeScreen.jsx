@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Alert, FlatList, StyleSheet, ScrollView } from 'react-native';
+import { LogBox } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { useAuth } from '../context/AuthContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -14,6 +15,10 @@ const HomeScreen = () => {
 
   const [countyVotings, setCountyVotings] = useState([]);
   const [cityVotings, setCityVotings] = useState([]);
+
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
 
   useEffect(() => {
     fetchVotingsByCountyName(user?.county)
@@ -39,7 +44,7 @@ const HomeScreen = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
-          <Text style={styles.welcomeText}>
+          <Text style={styles.infoText}>
             Welcome, {user?.first_name || 'Guest'}
           </Text>
           <Text style={styles.infoText}>
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 20,
-    paddingBottom: 100,  // Ensure there's space at the bottom for the FAB
+    paddingBottom: 100,  
   },
   header: {
     marginBottom: 20,
@@ -143,7 +148,7 @@ const styles = StyleSheet.create({
     bottom: 30,
     backgroundColor: '#007bff',
     borderRadius: 50,
-  
+    
   },
 });
 
