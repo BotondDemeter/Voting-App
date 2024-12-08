@@ -6,6 +6,20 @@ import { IVoting } from '../models/VotingInterfaces';
 const votingService = new VotingService();
 
 class VotingController {
+
+    public async getVotingById(req: Request, res: Response): Promise<void> {
+        try {
+            const { id } = req.params;
+            const voting = await votingService.getVotingById(id);
+            if (voting) {
+                res.status(200).json({ data: voting });
+            } else {
+                res.status(404).json({ message: 'Voting not found' });
+            }
+        } catch (error: any) {
+            res.status(500).json({ message: 'Failed to retrieve voting', error: error.message });
+        }
+    }
     public async createNewVoting(req: Request, res: Response): Promise<void> {
         try {
             const votingData: IVoting = req.body;
@@ -41,9 +55,8 @@ class VotingController {
 
     public async voteForCandidate(req: Request, res: Response): Promise<void> {
         try {
-            const { votingId, candidateId } = req.params;
-            const { userId } = req.body; // Assuming userId is sent in the request body
-
+            const { userId, votingId, candidateId } = req.params;
+            
             const updatedVoting = await votingService.voteForCandidate(userId, votingId, candidateId);
             if (updatedVoting) {
                 res.status(200).json({ message: 'Vote registered successfully', data: updatedVoting });

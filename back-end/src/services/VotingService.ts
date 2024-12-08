@@ -4,6 +4,20 @@ import VotingModel from '../models/Voting';
 import { IVoting } from '../models/VotingInterfaces';
 
 class VotingService {
+
+    public async getVotingById(id: string): Promise<IVoting | null> {
+        try {
+            const voting = await VotingModel.findById(id);
+            if (!voting) {
+                console.log(`Voting not found for ID: ${id}`);
+            }
+            return voting;
+        } catch (error) {
+            console.error('Error fetching voting by ID:', error);
+            throw new Error('Failed to fetch voting by ID.');
+        }
+    }
+
     public async createNewVoting(votingData: IVoting): Promise<IVoting | null> {
         try {
             const voting = new VotingModel(votingData);
@@ -42,7 +56,9 @@ class VotingService {
         candidateId: string
     ): Promise<IVoting | null> {
         try {
+            console.log(userId, votingId, candidateId);
             const voting = await VotingModel.findById(votingId);
+            
 
             if (!voting) {
                 throw new Error('Voting not found.');
