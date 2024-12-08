@@ -65,6 +65,30 @@ class VotingController {
             res.status(500).json({ message: 'Failed to retrieve user voting history', error: error.message });
         }
     }
+
+    public async getVotingsByCountyName(req: Request, res: Response): Promise<void> {
+        const { county } = req.params;
+
+        try {
+            const votings = await votingService.getVotingsByCountyName(county);
+            res.status(200).json(votings);
+        } catch (error) {
+            console.error('Error fetching votings by county name:', error);
+            res.status(500).json({ message: 'Failed to fetch votings by county name.' });
+        }
+    }
+
+    public async getVotingsByCityName(req: Request, res: Response): Promise<void> {
+        const { county, city } = req.params;
+
+        try {
+            const votings = await votingService.getVotingsByCityName(county, city);
+            res.status(200).json(votings);
+        } catch (error) {
+            console.error('Error fetching votings by city name:', error);
+            res.status(500).json({ message: 'Failed to fetch votings by city name.' });
+        }
+    }
 }
 
 export default VotingController;

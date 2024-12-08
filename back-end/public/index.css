@@ -1,0 +1,125 @@
+/* General body styling */
+body {
+    font-family: "Courier New", Courier, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  .form-container {
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    
+  }
+  
+  input, button, select, textarea {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    
+  }
+
+
+  
+  textarea {
+    height: 80px;
+    resize: none;
+  }
+  
+  button {
+    color: #444;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .response, #response {
+    text-align: left;
+    margin: 10px auto;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    font-family: "Courier New", Courier, monospace;
+    color: #444;
+  }
+  
+  .response::before, #response::before {
+    content: "Response:";
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  /* Headings */
+  h1 {
+    color: #4CAF50;
+  }
+  
+  h2 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+
+  /* Tab Bar Style */
+.tab-bar {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    background-color: #333;
+    padding: 10px;
+  }
+  
+  .tab-bar a {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 5px;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .tab-bar a:hover {
+    background-color: #555;
+  }
+  
+  .tab-bar a.active {
+    background-color: #007bff;
+  }
+  
+  /* Hide all form containers by default */
+  .form-container {
+    display: none;
+  }
+  
+  /* Show active section */
+  .active-section {
+    display: block;
+  }
+
+  code { 
+    border-radius: 4px;
+    padding: 2px 6px;
+    background-color: #f4bd5030;
+    border: 1px solid #f4bd50;
+}

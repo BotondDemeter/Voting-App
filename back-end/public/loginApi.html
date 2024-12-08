@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login API</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="tab-bar">
+        <a style="color: #4CAF50;">Login API</a>
+        <a href="index.html">Back</a>
+
+    </div>
+    <p>Enter your credentials to log in.</p>
+    <label for="id_number">ID Number:</label>
+    <input type="text" id="id_number" placeholder="Enter your ID number" required>
+    <label for="password">Password:</label>
+    <input type="password" id="password" placeholder="Enter your password" required>
+    <button onclick="submitLogin()">Login</button>
+    <p id="response"></p>
+    <script>
+        function submitLogin() {
+            const id_number = document.getElementById('id_number').value;
+            const password = document.getElementById('password').value;
+
+            fetch('http://192.168.1.136:3000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_number, password })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('response').textContent = `Error: ${error.message}`;
+                });
+        }
+    </script>
+</body>
+
+</html>

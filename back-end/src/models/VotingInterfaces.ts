@@ -16,7 +16,8 @@ export interface IVoting extends Document {
     description?: string;
     isActive: boolean;
     region: 'City' | 'Country';
-    regionName: string;
+    countyName: string ;
+    cityName: string | null;
     candidates: ICandidate[];
     totalVotes: number;
     startDate: Date;

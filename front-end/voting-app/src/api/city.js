@@ -20,3 +20,13 @@ export const insertCity = async (city) => {
         throw new Error('Failed to insert city.');
     }
 };
+
+export const getCityByCountyName = async (countyName) => {
+    try {
+        const response = await apiClient.get(`/getCityByCountyName/${countyName}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching city by county name:', error);
+        throw new Error('Failed to fetch city by county name.');
+    }
+};

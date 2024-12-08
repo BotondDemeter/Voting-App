@@ -46,7 +46,8 @@ export class Voting {
         description = '',
         isActive = true,
         region,
-        regionName,
+        countyName,
+        cityName,
         candidates = [],
         totalVotes = 0,
         startDate,
@@ -58,7 +59,8 @@ export class Voting {
         this.description = description;
         this.isActive = isActive;
         this.region = region;
-        this.regionName = regionName;
+        this.countyName = countyName;
+        this.cityName = cityName;
         this.candidates = candidates.map(candidate => new Candidate(...Object.values(candidate)));
         this.totalVotes = totalVotes;
         this.startDate = startDate;
@@ -76,9 +78,9 @@ export class County {
 }
 
 export class City {
-    constructor(_id, name, county) {
+    constructor(_id, name, countyName) {
         this._id = _id;
         this.name = name;
-        this.county = county;
+        this.countyName = countyName;
     }
 }

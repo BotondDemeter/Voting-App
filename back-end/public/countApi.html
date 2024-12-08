@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>County API</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+
+  <div class="tab-bar">
+    <a style="color: #4CAF50;">County API</a>
+
+    <a href="#" class="tab-link active" data-target="countiesSection">Get All Counties</a>
+    <a href="#" class="tab-link" data-target="insertCountySection">Insert a New County</a>
+
+    <a href="index.html">Back</a>
+  </div>
+
+  <div id="countiesSection" class="form-container active-section">
+    <h2>Get All Counties</h2>
+    <p>Enpoint</p>
+    <code><a href="http://localhost:3000/api/getCounties" target="_blank">http://localhost:3000/api/getCounties</a></code>
+    <br>
+    <button onclick="fetchAllCounties()">Get All Counties</button>
+    <div id="counties" class="county-list">Counties will be displayed here.</div>
+  </div>
+
+  <div id="insertCountySection" class="form-container">
+    <h2>Insert a New County</h2>
+    <p>Enpoint</p>
+    <code>http://localhost:3000/api/insertCounty</code>
+    <br>
+    <label for="countyName">County Name:</label>
+    <input type="text" id="countyName" placeholder="Enter county name">
+    <button onclick="insertCounty()">Insert County</button>
+  </div>
+
+  <div id="response"></div>
+
+  <script>
+    const baseUrl = "http://localhost:3000";
+
+    // Tab switching functionality
+    const tabLinks = document.querySelectorAll('.tab-link');
+    tabLinks.forEach(link => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        // Remove active class from all tabs and sections
+        tabLinks.forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.querySelectorAll('.form-container').forEach(section => section.classList.remove('active-section'));
+        const targetSection = document.getElementById(event.target.dataset.target);
+        targetSection.classList.add('active-section');
+      });
+    });
+
+    // Fetch all counties
+    async function fetchAllCounties() {
+      try {
+        const response = await fetch(`${baseUrl}/api/getCounties`);
+        const counties = await response.json();
+        const countiesContainer = document.getElementById('counties');
+        countiesContainer.innerHTML = counties.length
+          ? counties.map(county => `<p>${county.name}</p>`).join('')
+          : 'No counties found.';
+      } catch (error) {
+        console.error('Error fetching counties:', error);
+        document.getElementById('counties').textContent = 'Error fetching counties.';
+      }
+    }
+
+    // Insert a new county
+    async function insertCounty() {
+      const countyName = document.getElementById('countyName').value;
+      if (!countyName) {
+        alert('Please enter a county name.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${baseUrl}/api/insertCounty`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ name: countyName })
+        });
+        const result = await response.json();
+        document.getElementById('response').textContent = `Inserted: ${JSON.stringify(result)}`;
+        fetchAllCounties();  // Refresh the counties list after insertion
+      } catch (error) {
+        console.error('Error inserting county:', error);
+        document.getElementById('response').textContent = 'Error inserting county.';
+      }
+    }
+  </script>
+</body>
+
+</html>

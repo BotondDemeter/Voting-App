@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { fetchAllCities as apiFetchAllCities,
-    insertCity as apiInsertCity
+    insertCity as apiInsertCity,
+    getCityByCountyName as apiGetCityByCountyName
  } from '../api';
 
 const useCity = () => {
@@ -28,5 +29,16 @@ const useCity = () => {
         }
     };
 
-    return { cities, loading, error, fetchCities, insertCity };
+    const fetchCitiesByCountyName = async (countyName) => {
+        try {
+            const citiesData = await apiGetCityByCountyName(countyName);
+            setCities(citiesData);
+            setLoading(false);
+        } catch (err) {
+            setError(err);
+            setLoading(false);
+        }
+    };
+
+    return { cities, loading, error, fetchCities, insertCity, fetchCitiesByCountyName };
 };  
