@@ -1,5 +1,5 @@
 export class User {
-    constructor(_id, first_name, last_name, id_number, cnp, nationality, type) {
+    constructor(_id, first_name, last_name, id_number, cnp, nationality, type, county, city) {
         this._id = _id;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -7,6 +7,8 @@ export class User {
         this.cnp = cnp;
         this.nationality = nationality;
         this.type = type;
+        this.county = county;
+        this.city = city;
     }
 }
 
@@ -42,6 +44,7 @@ export class Candidate {
 
 export class Voting {
     constructor(
+        _id,
         name,
         description = '',
         isActive = true,
@@ -55,6 +58,7 @@ export class Voting {
         createdAt = new Date(),
         voters = []
     ) {
+        this._id = _id;
         this.name = name;
         this.description = description;
         this.isActive = isActive;

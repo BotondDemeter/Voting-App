@@ -7,6 +7,8 @@ import BottomTabNavigator from './src/navigation/BottomNavigator';
 import { AuthProvider } from './src/context/AuthContext';
 import CompleteSignUp from './src/screens/CompleteSignUp';
 import CreateVotingScreen from './src/screens/CreateVotingScreen';
+import VoteDetailedScreen from './src/screens/VoteDetailedScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,7 @@ export default function App() {
           <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="CompleteSignUp" component={CompleteSignUp} options={{ headerShown: false }} />
           <Stack.Screen name="CreateVotingScreen" component={CreateVotingScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="VoteDetailedScreen" component={VoteDetailedScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>
