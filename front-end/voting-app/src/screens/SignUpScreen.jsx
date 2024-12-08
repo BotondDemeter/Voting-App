@@ -48,11 +48,11 @@ const SignUpScreen = ({ navigation }) => {
                 const formData = new FormData();
                 formData.append('image', {
                     uri: selectedAsset.uri,
-                    name: 'document.jpg', // Adjust if needed
-                    type: 'image/jpeg', // Adjust based on file type
+                    name: 'document.jpg',
+                    type: 'image/jpeg',
                 });
 
-                const response = await axios.post('http://172.20.10.3:3000/api/process-image', formData, {
+                const response = await axios.post('http://192.168.1.206/api/process-image', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },

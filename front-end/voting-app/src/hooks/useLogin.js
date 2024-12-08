@@ -15,8 +15,8 @@ const useLogin = () => {
       const response = await login(id_number, password);
       if (response && response.user) {
         const { user } = response;
-        contextLogin(user); // Log in the user in the AuthContext
-        return true; // Indicate success
+        contextLogin(user);
+        return true; 
       } else {
         setError('Invalid username or password');
         return false; // Indicate failure
