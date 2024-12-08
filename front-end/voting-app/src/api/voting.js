@@ -49,3 +49,23 @@ export const getVotingHistory = async (userId) => {
         throw new Error('Failed to fetch voting history.');
     }
 };
+
+export const getVotingsByCityName = async (countyName, cityName) => { 
+    try {
+        const response = await apiClient.get(`/votings/county/${countyName}/city/${cityName}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching votings by city name:', error);
+        throw new Error('Failed to fetch votings by city name.');
+    }
+};
+
+export const getVotingsByCountyName = async (countyName) => {
+    try {
+        const response = await apiClient.get(`/votings/county/${countyName}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching votings by county name:', error);
+        throw new Error('Failed to fetch votings by county name.');
+    }
+};

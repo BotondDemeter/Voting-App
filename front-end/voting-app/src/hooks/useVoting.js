@@ -5,6 +5,8 @@ import {
   setVotingInactive as apiSetVotingInactive,
   voteForCandidate as apiVoteForCandidate,
   getVotingHistory as apiGetVotingHistory,
+  getVotingsByCityName as apiGetVotingsByCityName,
+  getVotingsByCountyName as apiGetVotingsByCountyName
 } from '../api/voting';
 
 const useVoting = () => {
@@ -81,12 +83,43 @@ const useVoting = () => {
     }
   };
 
+  const fetchVotingsByCityName = async (cityName, countyName) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await apiGetVotingsByCityName(cityName, countyName);
+      return result;
+    } catch (err) {
+      setError(err.message || 'Failed to fetch votings by city name.');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchVotingsByCountyName = async (countyName) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await apiGetVotingsByCountyName(countyName);
+      return result;
+    } catch (err) {
+      setError(err.message || 'Failed to fetch votings by county name.');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   return {
     createVoting,
     fetchAllActiveVotings,
     setVotingInactive,
     voteForCandidate,
     fetchVotingHistory,
+    fetchVotingsByCityName,
+    fetchVotingsByCountyName,
     loading,
     error,
   };
