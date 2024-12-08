@@ -48,9 +48,15 @@ const VotingSchema = new Schema<IVoting>(
             required: true,
             enum: ['City', 'Country'], 
         },
-        regionName: {
+        countyName: {
             type: String,
             required: true,
+        },
+        cityName: {
+            type: String,
+            required: function (this: IVoting) {
+                return this.region === 'City';
+            },
         },
         candidates: {
             type: [CandidateSchema],

@@ -27,4 +27,13 @@ export class CityService {
         }
     }
 
+    public async getCityByCountyName(county: string): Promise<ICity[]> {
+        try {
+            return await City.find({ countyName: county });
+        } catch (error) {
+            console.error('Error fetching cities by county name:', error);
+            throw new Error('Failed to fetch cities by county name.');
+        }
+    }
+
 }

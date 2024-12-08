@@ -80,6 +80,24 @@ class VotingService {
             throw new Error('Failed to fetch user voting history.');
         }
     }
+
+    public async getVotingsByCountyName(county: string): Promise<IVoting[]> {
+        try {
+            return await VotingModel.find({ countyName: county, cityName: null });
+        } catch (error) {
+            console.error('Error fetching votings by county name:', error);
+            throw new Error('Failed to fetch votings by county name.');
+        }
+    }
+
+    public async getVotingsByCityName(county: string, city: string): Promise<IVoting[]> {
+        try {
+            return await VotingModel.find({ countyName: county, cityName: city });
+        } catch (error) {
+            console.error('Error fetching votings by city name:', error);
+            throw new Error('Failed to fetch votings by city name.');
+        }
+    }
 }
 
 export default VotingService;

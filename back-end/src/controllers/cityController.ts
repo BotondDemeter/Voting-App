@@ -25,6 +25,20 @@ class CityController {
             next(error);
         }
     }
+
+    async getCityByCountyName(req: Request, res: Response, next: NextFunction) {
+        try {
+            const countyName = req.params.countyName;
+            const cityName = req.params.cityName;
+            const cities = await cityService.getCityByCountyName(countyName);
+            res.json(cities);
+        } catch (error) {
+            console.error('Error fetching cities by county name:', error);
+            next(error);
+        }
+    }
+
+    
 }   
 
 export const cityController = new CityController();

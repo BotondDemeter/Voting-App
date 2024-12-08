@@ -16,4 +16,8 @@ app.post('/vote/:votingId/:candidateId', (req, res) => votingController.voteForC
 
 app.get('/history/:userId', (req, res) => votingController.getUsersVotingHistory(req, res));
 
+app.get('/votings/county/:county', (req, res) => votingController.getVotingsByCountyName(req, res));
+
+app.get('/votings/county/:county/city/:city', (req, res) => votingController.getVotingsByCityName(req, res));
+
 export default app;
