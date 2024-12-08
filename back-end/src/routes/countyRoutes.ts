@@ -4,8 +4,8 @@ import { countyController } from '../controllers/countyController';
 
 const router = express.Router();
 
-router.get('/counties', countyController.getAllCounties);
+router.get('/getCounties', countyController.getAllCounties);
 
-router.post('/counties', countyController.insertCounty);
+router.post('/insertCounty', countyController.insertCounty);
 
 export default router;

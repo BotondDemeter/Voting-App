@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-    View, Text, TextInput, Alert, KeyboardAvoidingView, Platform, TouchableOpacity, 
-    TouchableWithoutFeedback, Keyboard, Image, SafeAreaView, ScrollView } from 'react-native';
+import {
+    View, Text, TextInput, Alert, KeyboardAvoidingView, Platform, TouchableOpacity,
+    TouchableWithoutFeedback, Keyboard, Image, SafeAreaView, ScrollView
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
 import signUpStyles from '../assets/signUpStyles';
@@ -44,16 +45,14 @@ const SignUpScreen = ({ navigation }) => {
 
                 setScannedImage(selectedAsset.uri);
 
-                // Prepare FormData for API call
                 const formData = new FormData();
                 formData.append('image', {
                     uri: selectedAsset.uri,
-                    name: 'document.jpg', // Adjust if needed
-                    type: 'image/jpeg', // Adjust based on file type
+                    name: 'document.jpg',
+                    type: 'image/jpeg',
                 });
 
-                // Call the API
-                const response = await axios.post('http://192.168.1.206:3000/api/process-image', formData, {
+                const response = await axios.post('http://192.168.1.206/api/process-image', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -72,38 +71,38 @@ const SignUpScreen = ({ navigation }) => {
             Alert.alert('Error', 'An error occurred while selecting or uploading the image.');
         }
     };
-    
+
 
     return (
-        <View style={{ flex: 1}}>
-            <KeyboardAvoidingView 
+        <View style={{ flex: 1 }}>
+            <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 style={[loginStyles.loginBox]}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center'}} keyboardShouldPersistTaps="handled">
-                <View style={loginStyles.loginKey}>
-                    <Icon name="key" size={40} color="white" />
-                </View>
-                <Text style={loginStyles.loginTitle}>Sign Up to the Voting App!</Text>
-
-                <View style={signUpStyles.idButtonContainer}>
-                    <TouchableOpacity 
-                        style={signUpStyles.IdButton} 
-                        onPress={handlePickImage}
-                    >
-                        <Icon name="camera" style={signUpStyles.cameraIcon} />
-                        <Text style={signUpStyles.IdButtonText}>SELECT A PICTURE OF YOUR ID</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={loginStyles.loginForm}>
-
-                   
-
-                    <View style={loginStyles.loginButtonContainer}>
-                        <Text style={loginStyles.register}>Already have an account? 
-                            <Text style={loginStyles.signUp} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })}>Log In!</Text>
-                        </Text>
+                <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }} keyboardShouldPersistTaps="handled">
+                    <View style={loginStyles.loginKey}>
+                        <Icon name="key" size={40} color="white" />
                     </View>
-                </View>
+                    <Text style={loginStyles.loginTitle}>Sign Up to the Voting App!</Text>
+
+                    <View style={signUpStyles.idButtonContainer}>
+                        <TouchableOpacity
+                            style={signUpStyles.IdButton}
+                            onPress={handlePickImage}
+                        >
+                            <Icon name="camera" style={signUpStyles.cameraIcon} />
+                            <Text style={signUpStyles.IdButtonText}>SELECT A PICTURE OF YOUR ID</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={loginStyles.loginForm}>
+
+
+
+                        <View style={loginStyles.loginButtonContainer}>
+                            <Text style={loginStyles.register}>Already have an account?
+                                <Text style={loginStyles.signUp} onPress={() => navigation.reset({ index: 0, routes: [{ name: 'Login' }] })}>Log In!</Text>
+                            </Text>
+                        </View>
+                    </View>
                 </ScrollView>
             </KeyboardAvoidingView>
         </View>

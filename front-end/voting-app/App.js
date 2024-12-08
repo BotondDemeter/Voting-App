@@ -6,6 +6,7 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import BottomTabNavigator from './src/navigation/BottomNavigator';
 import { AuthProvider } from './src/context/AuthContext';
 import CompleteSignUp from './src/screens/CompleteSignUp';
+import CreateVotingScreen from './src/screens/CreateVotingScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ export default function App() {
           <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={BottomTabNavigator} options={{ headerShown: false }} />
           <Stack.Screen name="CompleteSignUp" component={CompleteSignUp} options={{ headerShown: false }} />
+          <Stack.Screen name="CreateVotingScreen" component={CreateVotingScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </AuthProvider>

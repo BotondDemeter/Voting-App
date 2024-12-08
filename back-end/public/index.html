@@ -1,70 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Processing API Test</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            margin-bottom: 20px;
-        }
-        #response pre {
-            background: #f4f4f4;
-            padding: 10px;
-            border: 1px solid #ddd;
-            overflow-x: auto;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Testing</title>
+  <link rel="stylesheet" href="index.css">
+
 </head>
 <body>
-    <h1>Image Processing API Test</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <label for="image">Upload Image:</label>
-        <input type="file" id="image" name="image" accept="image/*" required>
-        <button type="button" onclick="submitForm()">Submit</button>
-    </form>
-    <div id="response">
-        <h3>Response:</h3>
-        <pre id="responseData">No response yet...</pre>
-    </div>
-    <script>
-        async function submitForm() {
-            const form = document.getElementById('uploadForm');
-            const fileInput = document.getElementById('image');
-            const file = fileInput.files[0];
-
-            if (!file) {
-                alert("Please select an image to upload.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('image', file);
-
-            try {
-                const response = await fetch('/api/process-image', {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status} - ${response.statusText}`);
-                }
-
-                const data = await response.json();
-                document.getElementById('responseData').textContent = JSON.stringify(data, null, 4);
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('responseData').textContent = `Error: ${error.message}`;
-            }
-        }
-    </script>
+  <h1>API Testing Dashboard</h1>
+  <div class="button-container">
+    <button onclick="navigateTo('registerApi.html')">Register API</button>
+    <button onclick="navigateTo('loginApi.html')">Login API</button>
+    <button onclick="navigateTo('imageApi.html')">Image API</button>
+    <button onclick="navigateTo('cityApi.html')">City API</button>
+    <button onclick="navigateTo('countApi.html')">Count API</button>
+    <button onclick="navigateTo('votingApi.html')">Voting API</button>
+  </div>
+  <script>
+    function navigateTo(page) {
+      window.location.href = page;
+    }
+  </script>
 </body>
 </html>

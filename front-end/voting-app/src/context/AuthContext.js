@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
       const storedUser = await AsyncStorage.getItem('user');
       if (storedUser) {
         setIsAuthenticated(true);
-        setUser(JSON.parse(storedUser));  // Ensure correct parsing
+        setUser(JSON.parse(storedUser));
       }
     };
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register API</title>
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="baseUrl.js"></script>
+
+</head>
+
+<body>
+    <div class="tab-bar">
+        <a style="color: #4CAF50;">Register API</a>
+            <a href="index.html">Back</a>
+    </div>
+
+    <p>Fill in the details to create a new account.</p>
+
+        <label for="cnp">CNP:</label>
+        <input type="text" id="cnp" placeholder="Enter your CNP" required>
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" placeholder="Enter your first name" required>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" placeholder="Enter your last name" required>
+        <label for="id_number">ID Number:</label>
+        <input type="text" id="id_number" placeholder="Enter your ID number" required>
+        <label for="nationality">Nationality:</label>
+        <input type="text" id="nationality" placeholder="Enter your nationality" required>
+        <label for="county">County:</label>
+        <input type="text" id="county" placeholder="Enter your county" required>
+        <label for="city">City:</label>
+        <input type="text" id="city" placeholder="Enter your city" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+        <button onclick="submitRegister()">Register</button>
+
+    <p id="response"></p>
+
+    <script>
+ 
+        
+        function submitRegister() {
+            const cnp = document.getElementById('cnp').value;
+            const first_name = document.getElementById('first_name').value;
+            const last_name = document.getElementById('last_name').value;
+            const id_number = document.getElementById('id_number').value;
+            const nationality = document.getElementById('nationality').value;
+            const county = document.getElementById('county').value;
+            const city = document.getElementById('city').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // Make the API call to register
+            fetch('http://192.168.1.136:3000/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cnp, first_name, last_name, id_number, nationality, county, city, password, confirmPassword })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('response').textContent = `Error: ${error.message}`;
+                });
+        }
+    </script>
+</body>
+
+</html>

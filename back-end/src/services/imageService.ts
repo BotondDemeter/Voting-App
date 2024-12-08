@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 
 export const runPythonScript = (imageData: Buffer): Promise<Record<string, any>> => {
     return new Promise((resolve, reject) => {
-        const python = spawn('python3', ['src/pythonscript/digitize.py']); // Ensure correct path
+        const python = spawn('python3', ['src/pythonscript/digitize.py']);
 
         let output = '';
         let errorOutput = '';
