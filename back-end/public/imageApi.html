@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image API</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+  <div class="tab-bar">
+    <a style="color: #4CAF50;">Image API</a>
+
+    <a href="#" class="tab-link active" data-target="uploadImageSection">Upload Image</a>
+
+    <a href="index.html">Back</a>
+  </div>
+
+  <div id="uploadImageSection" class="form-container active-section">
+    <h2>Upload an Image</h2>
+    <form id="imageForm">
+      <input type="file" id="imageInput" accept="image/*" required>
+      <button type="submit">Process Image</button>
+    </form>
+  </div>
+
+  <div id="response"></div>
+
+  <script>
+    const baseUrl = "http://192.168.1.136:3000"; // Your API base URL
+
+    // Tab switching functionality
+    const tabLinks = document.querySelectorAll('.tab-link');
+    tabLinks.forEach(link => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        // Remove active class from all tabs and sections
+        tabLinks.forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+
+        document.querySelectorAll('.form-container').forEach(section => section.classList.remove('active-section'));
+        const targetSection = document.getElementById(event.target.dataset.target);
+        targetSection.classList.add('active-section');
+      });
+    });
+
+    document.getElementById('imageForm').addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent default form submission
+
+      const imageInput = document.getElementById('imageInput');
+      const file = imageInput.files[0];
+
+      if (!file) {
+        alert('Please select an image.');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await fetch(`${baseUrl}/api/process-image`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const result = await response.json();
+        document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+      } catch (error) {
+        console.error('Error processing image:', error);
+        document.getElementById('response').textContent = 'Error processing image.';
+      }
+    });
+  </script>
+
+</body>
+</html>

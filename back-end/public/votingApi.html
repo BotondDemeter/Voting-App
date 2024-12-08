@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting API</title>
+    <link rel="stylesheet" href="index.css">
+    <script type="module" src="./baseUrl.js"></script>
+</head>
+
+<body>
+
+    <div class="tab-bar">
+        <a style="color: #4CAF50;">Voting API</a>
+        <a href="#create-voting" class="tab-link active" data-target="create-voting">Create New Voting</a>
+        <a href="#active-votings" class="tab-link" data-target="active-votings">Get Active Votings</a>
+        <a href="#votings-by-county" class="tab-link" data-target="votings-by-county">Get Votings by County</a>
+        <a href="#votings-by-city" class="tab-link" data-target="votings-by-city">Get Votings by City</a>
+        <a href="#inactive-voting" class="tab-link" data-target="inactive-voting">Set Voting Inactive</a>
+        <a href="#vote-candidate" class="tab-link" data-target="vote-candidate">Vote for Candidate</a>
+        <a href="#history" class="tab-link" data-target="history">User Voting History</a>
+        <a href="index.html">Back</a>
+
+    </div>
+    <h1>Voting API</h1>
+
+    <div id="create-voting" class="form-container active-section">
+        <h2>Create New Voting</h2>
+        <form id="createVotingForm">
+            <input type="text" id="votingName" placeholder="Voting Name" required>
+            <textarea id="votingDescription" placeholder="Description (optional)"></textarea>
+            <select id="region" required>
+                <option value="" disabled selected>Region</option>
+                <option value="City">City</option>
+                <option value="Country">Country</option>
+            </select>
+            <input type="text" id="countyName" placeholder="County Name" required>
+            <input type="text" id="cityName" placeholder="City Name">
+            <input type="datetime-local" id="startDate" required>
+            <input type="datetime-local" id="endDate" required>
+
+            <div id="candidatesContainer">
+                <h3>Candidates</h3>
+                <div class="candidate">
+                    <input type="text" name="candidates[0][name]" placeholder="Candidate Name" required>
+                    <textarea name="candidates[0][description]"
+                        placeholder="Candidate Description (optional)"></textarea>
+                    <input type="text" name="candidates[0][party]" placeholder="Party (optional)">
+                </div>
+            </div>
+            <button type="button" id="addCandidateButton">Add Candidate</button>
+            <button type="submit">Create Voting</button>
+        </form>
+    </div>
+
+    <div id="active-votings" class="form-container">
+        <h2>Get Active Votings</h2>
+        <button id="getActiveVotings">List Active Votings</button>
+        <div id="activeVotingsResponse" class="response"></div>
+    </div>
+
+    <div id="inactive-voting" class="form-container">
+        <h2>Set Voting Inactive</h2>
+        <input type="text" id="votingIdInactive" placeholder="Voting ID" required>
+        <button id="setVotingInactive">Set Inactive</button>
+        <div id="inactiveResponse" class="response"></div>
+    </div>
+
+    <div id="vote-candidate" class="form-container">
+        <h2>Vote for Candidate</h2>
+        <input type="text" id="votingIdVote" placeholder="Voting ID" required>
+        <input type="text" id="candidateId" placeholder="Candidate ID" required>
+        <input type="text" id="userId" placeholder="User ID" required>
+        <button id="voteForCandidate">Vote</button>
+        <div id="voteResponse" class="response"></div>
+    </div>
+
+    <div id="history" class="form-container">
+        <h2>User Voting History</h2>
+        <input type="text" id="userIdHistory" placeholder="User ID" required>
+        <button id="getVotingHistory">Get History</button>
+        <div id="historyResponse" class="response"></div>
+    </div>
+
+    <div id="votings-by-county" class="form-container">
+        <h2>Get Votings by County</h2>
+        <input type="text" id="countyNameSearch" placeholder="County Name" required>
+        <button id="getVotingsByCounty">Fetch Votings</button>
+        <div id="votingsByCountyResponse" class="response"></div>
+    </div>
+
+    <div id="votings-by-city" class="form-container">
+        <h2>Get Votings by City</h2>
+        <input type="text" id="countyNameCitySearch" placeholder="County Name" required>
+        <input type="text" id="cityNameSearch" placeholder="City Name" required>
+        <button id="getVotingsByCity">Fetch Votings</button>
+        <div id="votingsByCityResponse" class="response"></div>
+    </div>
+
+    <script type="module">
+        import { baseUrl } from './baseUrl.js';
+
+
+        let candidateIndex = 1;
+
+        document.getElementById("addCandidateButton").addEventListener("click", () => {
+            const candidatesContainer = document.getElementById("candidatesContainer");
+            const candidateDiv = document.createElement("div");
+            candidateDiv.classList.add("candidate");
+            candidateDiv.innerHTML = `
+        <input type="text" name="candidates[${candidateIndex}][name]" placeholder="Candidate Name" required>
+        <textarea name="candidates[${candidateIndex}][description]" placeholder="Candidate Description (optional)"></textarea>
+        <input type="text" name="candidates[${candidateIndex}][party]" placeholder="Party (optional)">
+      `;
+            candidatesContainer.appendChild(candidateDiv);
+            candidateIndex++;
+        });
+
+        const tabLinks = document.querySelectorAll('.tab-link');
+        tabLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                tabLinks.forEach(tab => tab.classList.remove('active'));
+                event.target.classList.add('active');
+
+                document.querySelectorAll('.form-container').forEach(section => section.classList.remove('active-section'));
+                const targetSection = document.getElementById(event.target.dataset.target);
+                targetSection.classList.add('active-section');
+            });
+        });
+
+        document.getElementById('createVotingForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const name = document.getElementById('votingName').value;
+            const description = document.getElementById('votingDescription').value;
+            const region = document.getElementById('region').value;
+            const countyName = document.getElementById('countyName').value;
+            const cityName = document.getElementById('cityName').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const candidates = [];
+
+            for (let i = 0; i < candidateIndex; i++) {
+                const candidateName = document.querySelector(`input[name="candidates[${i}][name]"]`).value;
+                const candidateDescription = document.querySelector(`textarea[name="candidates[${i}][description]"]`).value;
+                const candidateParty = document.querySelector(`input[name="candidates[${i}][party]"]`).value;
+
+                candidates.push({ name: candidateName, description: candidateDescription, party: candidateParty });
+            }
+
+            const votingData = {
+                name, description, region, countyName, cityName, startDate, endDate, candidates
+            };
+
+            try {
+                const response = await fetch(`${baseUrl}/api/votings/create`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(votingData),
+                });
+                const result = await response.json();
+                alert('Response: ' + JSON.stringify(result, null, 2));
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        document.getElementById('getActiveVotings').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${baseUrl}/api/votings/active`);
+                const result = await response.json();
+                const activeVotingsContainer = document.getElementById('activeVotingsResponse');
+                activeVotingsContainer.innerHTML = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error fetching active votings:', error);
+            }
+        });
+
+        document.getElementById('setVotingInactive').addEventListener('click', async () => {
+            const votingId = document.getElementById('votingIdInactive').value;
+            if (!votingId) {
+                alert('Please provide a Voting ID');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/api/votings/inactive/${votingId}`, { method: 'PATCH' });
+                const result = await response.json();
+                const inactiveResponseContainer = document.getElementById('inactiveResponse');
+                inactiveResponseContainer.innerHTML = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error setting voting inactive:', error);
+            }
+        });
+
+        document.getElementById('voteForCandidate').addEventListener('click', async () => {
+            const votingId = document.getElementById('votingIdVote').value;
+            const candidateId = document.getElementById('candidateId').value;
+            const userId = document.getElementById('userId').value;
+
+            try {
+                const response = await fetch(`${baseUrl}/api/votings/vote/${votingId}/${candidateId}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId }),
+                });
+                const result = await response.json();
+                document.getElementById('voteResponse').textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        document.getElementById('getVotingHistory').addEventListener('click', async () => {
+            const userId = document.getElementById('userIdHistory').value;
+            if (!userId) {
+                alert('Please provide a User ID');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/api/votings/history/${userId}`);
+                const result = await response.json();
+                const historyResponseContainer = document.getElementById('historyResponse');
+                historyResponseContainer.innerHTML = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error fetching user voting history:', error);
+            }
+        });
+
+        document.getElementById('getVotingsByCounty').addEventListener('click', async () => {
+            const countyName = document.getElementById('countyNameSearch').value.trim();
+
+            if (!countyName) {
+                alert('Please provide a County Name.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/votings/county/${countyName}`);
+                const result = await response.json();
+                document.getElementById('votingsByCountyResponse').innerHTML = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error fetching votings by county:', error);
+            }
+        });
+
+        document.getElementById('getVotingsByCity').addEventListener('click', async () => {
+            const countyName = document.getElementById('countyNameCitySearch').value.trim();
+            const cityName = document.getElementById('cityNameSearch').value.trim();
+
+            if (!countyName || !cityName) {
+                alert('Please provide both County and City Names.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${baseUrl}/votings/county/${countyName}/city/${cityName}`);
+                const result = await response.json();
+                document.getElementById('votingsByCityResponse').innerHTML = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error('Error fetching votings by city:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>
