@@ -83,7 +83,7 @@ class VotingService {
 
     public async getVotingsByCountyName(county: string): Promise<IVoting[]> {
         try {
-            return await VotingModel.find({ countyName: county, cityName: null });
+            return await VotingModel.find({ countyName: county, cityName: '' });
         } catch (error) {
             console.error('Error fetching votings by county name:', error);
             throw new Error('Failed to fetch votings by county name.');

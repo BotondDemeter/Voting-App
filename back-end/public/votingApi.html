@@ -99,8 +99,7 @@
     </div>
 
     <script type="module">
-        
-        baseUrl = 'http://192.168.0.74:3000';
+        import { baseUrl } from './baseUrl.js';
 
 
         let candidateIndex = 1;
@@ -240,7 +239,7 @@
             }
 
             try {
-                const response = await fetch(`${baseUrl}/votings/county/${countyName}`);
+                const response = await fetch(`${baseUrl}/api/votings/county/${countyName}`);
                 const result = await response.json();
                 document.getElementById('votingsByCountyResponse').innerHTML = JSON.stringify(result, null, 2);
             } catch (error) {
@@ -258,7 +257,7 @@
             }
 
             try {
-                const response = await fetch(`${baseUrl}/votings/county/${countyName}/city/${cityName}`);
+                const response = await fetch(`${baseUrl}/api/votings/county/${countyName}/city/${cityName}`);
                 const result = await response.json();
                 document.getElementById('votingsByCityResponse').innerHTML = JSON.stringify(result, null, 2);
             } catch (error) {
