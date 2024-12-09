@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     },
     winnerLabel: {
         backgroundColor: '#E0F7E7',
-        color: '#F9AA33',
+        color: '#0DB8DE',
         fontSize: 14,
         fontWeight: 'bold',
         paddingHorizontal: 8,

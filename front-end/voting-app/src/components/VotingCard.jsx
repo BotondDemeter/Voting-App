@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     },
     votedLabel: {
         backgroundColor: '#E0F7E7',
-        color: '#2E7D32',
+        color: '#0DB8DE',
         fontSize: 14,
         fontWeight: 'bold',
         paddingHorizontal: 8,

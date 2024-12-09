@@ -92,7 +92,7 @@ const VoteDetailedScreen = () => {
                             <Button
                                 title={`Vote for ${item.name}`}
                                 onPress={() => handleVote(item._id)}
-                                color="#F9AA33"
+                                color="#0DB8DE"
                             />
                         )}
                     </View>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 28,
         fontWeight: 'bold',
-        color: '#F9AA33',
+        color: '#0DB8DE',
         marginBottom: 10,
     },
     descriptionText: {
@@ -147,12 +147,12 @@ const styles = StyleSheet.create({
     },
     detailsText: {
         fontWeight: 'bold',
-        color: '#F9AA33',
+        color: '#0DB8DE',
     },
     candidateHeading: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#F9AA33',
+        color: '#0DB8DE',
         marginVertical: 15,
     },
     candidateContainer: {
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     winnerLabel: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#F9AA33',
+        color: '#0DB8DE',
         textAlign: 'center',
     },
 });

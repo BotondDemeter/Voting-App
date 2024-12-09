@@ -17,7 +17,7 @@ const BottomTabNavigator = () => {
 
           if (route.name === 'Home') iconName = 'home';
           else if (route.name === 'Profile') iconName = 'user';
-          else if (route.name === 'Settings') iconName = 'cog';
+          else if (route.name === 'History') iconName = 'history';
 
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -29,8 +29,8 @@ const BottomTabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="History" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={SettingsScreen} />
     </Tab.Navigator>
   );
 };
