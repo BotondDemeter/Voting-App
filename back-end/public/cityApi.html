@@ -17,6 +17,7 @@
 
     <a href="#" class="tab-link active" data-target="citiesSection">Get All Cities</a>
     <a href="#" class="tab-link" data-target="insertCitySection">Insert a New City</a>
+    <a href="#" class="tab-link" data-target="getCityByCountyNameSection">Get City by County Name</a>
     <a href="index.html">Back</a>
   </div>
 
@@ -32,17 +33,29 @@
     <h2>Insert a New City</h2>
     <p>Endpoint</p>
     <code>http://localhost:3000/api/insertCity</code>
-    
+
     <label for="cityName">City Name:</label>
     <input type="text" id="cityName" placeholder="Enter city name">
     <button onclick="insertCity()">Insert City</button>
   </div>
 
+  <div id="getCityByCountyNameSection" class="form-container">
+    <h2>Get City by County Name</h2>
+    <p>Endpoint</p>
+    <code>http://localhost:3000/api/getCityByCountyName/:countyName</code>
+
+    <label for="countyNameSearch">County Name:</label>
+    <input type="text" id="countyNameSearch" placeholder="Enter county name" required>
+    <button onclick="fetchCityByCountyName()">Fetch Cities</button>
+
+    <div id="cityByCountyResponse" class="city-list">Cities will be displayed here.</div>
+  </div>
+
   <div id="response"></div>
 
-  <script type="module">
-   
-    const baseUrl = 'http://localhost:3000';
+  <script >
+
+    const baseUrl = 'http://192.168.0.74:3000';
 
     function navigateTo(page) {
       window.location.href = page;
@@ -97,6 +110,26 @@
       } catch (error) {
         console.error('Error inserting city:', error);
         document.getElementById('response').textContent = 'Error inserting city.';
+      }
+    }
+
+    async function fetchCityByCountyName() {
+      const countyName = document.getElementById('countyNameSearch').value.trim();
+      if (!countyName) {
+        alert('Please enter a county name.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${baseUrl}/api/getCityByCountyName/${countyName}`);
+        const cities = await response.json();
+        const cityByCountyContainer = document.getElementById('cityByCountyResponse');
+        cityByCountyContainer.innerHTML = cities.length
+          ? cities.map(city => `<p>${city.name}</p>`).join('')
+          : 'No cities found for this county.';
+      } catch (error) {
+        console.error('Error fetching cities by county name:', error);
+        document.getElementById('cityByCountyResponse').textContent = 'Error fetching cities.';
       }
     }
   </script>
