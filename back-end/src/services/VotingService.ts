@@ -4,6 +4,20 @@ import VotingModel from '../models/Voting';
 import { IVoting } from '../models/VotingInterfaces';
 
 class VotingService {
+
+    public async getVotingById(id: string): Promise<IVoting | null> {
+        try {
+            const voting = await VotingModel.findById(id);
+            if (!voting) {
+                console.log(`Voting not found for ID: ${id}`);
+            }
+            return voting;
+        } catch (error) {
+            console.error('Error fetching voting by ID:', error);
+            throw new Error('Failed to fetch voting by ID.');
+        }
+    }
+
     public async createNewVoting(votingData: IVoting): Promise<IVoting | null> {
         try {
             const voting = new VotingModel(votingData);
@@ -42,7 +56,9 @@ class VotingService {
         candidateId: string
     ): Promise<IVoting | null> {
         try {
+            console.log(userId, votingId, candidateId);
             const voting = await VotingModel.findById(votingId);
+            
 
             if (!voting) {
                 throw new Error('Voting not found.');
@@ -83,7 +99,7 @@ class VotingService {
 
     public async getVotingsByCountyName(county: string): Promise<IVoting[]> {
         try {
-            return await VotingModel.find({ countyName: county, cityName: '' });
+            return await VotingModel.find({ countyName: county, cityName: '' , isActive: true });
         } catch (error) {
             console.error('Error fetching votings by county name:', error);
             throw new Error('Failed to fetch votings by county name.');
@@ -92,7 +108,7 @@ class VotingService {
 
     public async getVotingsByCityName(county: string, city: string): Promise<IVoting[]> {
         try {
-            return await VotingModel.find({ countyName: county, cityName: city });
+            return await VotingModel.find({ countyName: county, cityName: city, isActive: true });
         } catch (error) {
             console.error('Error fetching votings by city name:', error);
             throw new Error('Failed to fetch votings by city name.');

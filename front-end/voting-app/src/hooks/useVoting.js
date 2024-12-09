@@ -6,12 +6,27 @@ import {
   voteForCandidate as apiVoteForCandidate,
   getVotingHistory as apiGetVotingHistory,
   getVotingsByCityName as apiGetVotingsByCityName,
-  getVotingsByCountyName as apiGetVotingsByCountyName
+  getVotingsByCountyName as apiGetVotingsByCountyName,
+  fetchVotingById as apiFetchVotingById
 } from '../api/voting';
 
 const useVoting = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const fetchVotingById = async (id) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await apiFetchVotingById(id);
+      return result;
+    } catch (err) {
+      setError(err.message || 'Failed to fetch voting by id.');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const createVoting = async (votingData) => {
     setLoading(true);
@@ -55,11 +70,11 @@ const useVoting = () => {
     }
   };
 
-  const voteForCandidate = async (votingId, candidateId) => {
+  const voteForCandidate = async (userId, votingId, candidateId) => {
     setLoading(true);
     setError(null);
     try {
-      const result = await apiVoteForCandidate(votingId, candidateId);
+      const result = await apiVoteForCandidate(userId, votingId, candidateId);
       return result;
     } catch (err) {
       setError(err.message || 'Failed to vote for candidate.');
@@ -68,6 +83,7 @@ const useVoting = () => {
       setLoading(false);
     }
   };
+
 
   const fetchVotingHistory = async (userId) => {
     setLoading(true);
@@ -87,7 +103,7 @@ const useVoting = () => {
     setLoading(true);
     setError(null);
     try {
-      const result = await apiGetVotingsByCityName(cityName, countyName);
+      const result = await apiGetVotingsByCityName(countyName, cityName);
       return result;
     } catch (err) {
       setError(err.message || 'Failed to fetch votings by city name.');
@@ -113,6 +129,7 @@ const useVoting = () => {
 
 
   return {
+    fetchVotingById,
     createVoting,
     fetchAllActiveVotings,
     setVotingInactive,

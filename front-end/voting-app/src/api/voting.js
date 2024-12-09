@@ -1,5 +1,15 @@
 import { apiClient } from './client';
 
+export const fetchVotingById = async (id) => {
+    try {
+        const response = await apiClient.get(`/votings/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching voting by id:', error);
+        throw new Error('Failed to fetch voting by id.');
+    }
+};
+
 export const createVoting = async (votingData) => {
     try {
         const response = await apiClient.post('/votings/create', votingData);
@@ -30,16 +40,15 @@ export const setVotingInactive = async (id) => {
     }
 };
 
-export const voteForCandidate = async (votingId, candidateId) => {
+export const voteForCandidate = async (userId, votingId, candidateId) => {
     try {
-        const response = await apiClient.post(`/votings/vote/${votingId}/${candidateId}`);
-        return response.data;
+        const response = await apiClient.post(`/votings/vote/${userId}/${votingId}/${candidateId}`);
+        return response.data;  
     } catch (error) {
         console.error('Error voting for candidate:', error);
         throw new Error('Failed to vote for candidate.');
     }
 };
-
 export const getVotingHistory = async (userId) => {
     try {
         const response = await apiClient.get(`/votings/history/${userId}`);
