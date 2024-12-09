@@ -21,7 +21,7 @@ const useVoting = () => {
       return result;
     } catch (err) {
       setError(err.message || 'Failed to create voting.');
-      throw err; // Re-throw error to handle it outside the hook if necessary
+      throw err;
     } finally {
       setLoading(false);
     }
