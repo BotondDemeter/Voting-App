@@ -5,7 +5,8 @@ import { useAuth } from '../context/AuthContext';
 const VotingCard = ({ voting, onDetailsPress }) => {
     const { user } = useAuth();  
 
-    const hasVoted = voting.voters.includes(user._id);
+
+    const hasVoted = voting.voters.includes(user?._id);
 
     return (
         <TouchableOpacity style={[styles.card, hasVoted && styles.votedCard]} onPress={onDetailsPress}>

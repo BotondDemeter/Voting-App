@@ -10,7 +10,7 @@ import numpy as np
 patterns = {
     "cnp": r'(\d{13})\s*Nume',
     "id_number": r'\b([A-Z]{2})\s*(?:[a-z]+\s+)?([\d]{6})\b',
-    "nationality": r'([A-Za-z]{3,})\s*(?:\W*\s*)*Loc',
+    # "nationality": r'([A-Za-z]{3,})\s*(?:\W*\s*)*Loc',
     "county": r'(?:\b([A-Z]{2})\b)\s*(?=Mun|Ors|Orș|Sat)',
     "city": r'Address(?:[\s\S]*?)(?:Jud\.[A-Za-z]+.*?)(?:Mun|Ors|Orș|Sat)\.([^\n]+)',
     "issue_date": r'(\d{2}\.\d{2}\.\d{2})',
@@ -54,6 +54,15 @@ def extract_last_name(text):
                         return last_name_match.group(1).strip()
     return None
 
+def extract_id_number(text):
+    lines = text.splitlines('\n')
+    for line in lines:
+        cleaned_line = re.sub(r'[^A-Z0-9]', ' ', line.upper())
+        match = re.match(r'([A-Z]{2})([0-9]{6})', cleaned_line)
+        if match:
+            return match.group(1), match.group(2)
+    return None
+        
 # Function to check completeness of extracted data
 def is_data_complete(data):
     required_fields = ["cnp", "id_number", "last_name", "first_name", "nationality", "county", "city", "issue_date", "expiration_date"]
@@ -98,12 +107,16 @@ try:
         if "last_name" not in partial_extracted_data:
             partial_extracted_data["last_name"] = extract_last_name(text)
 
+        if "id_number" not in partial_extracted_data:
+            partial_extracted_data["id_number"] = extract_id_number(text)
+
         for key, pattern in patterns.items():
             if key not in partial_extracted_data:
                 match = re.search(pattern, text, re.IGNORECASE)
                 if match:
                     partial_extracted_data[key] = match.group(1).strip()
-
+                    
+                    
         # Check for issue and expiration dates
         validity_match = re.search(r'(\d{2}\.\d{2}\.\d{2})\s*-\s*(\d{2}\.\d{2}\.\d{4})\s*\n*\s*IDROU', text)
         if validity_match:

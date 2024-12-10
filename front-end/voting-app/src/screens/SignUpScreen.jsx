@@ -52,7 +52,7 @@ const SignUpScreen = ({ navigation }) => {
                     type: 'image/jpeg',
                 });
 
-                const response = await axios.post('http://192.168.1.206/api/process-image', formData, {
+                const response = await axios.post('http://192.168.0.74:3000/api/process-image', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },

@@ -1,2 +1,2 @@
 // baseUrl.js
-export const baseUrl = 'http://192.168.0.74:3000';
+export const baseUrl = 'http://192.168.1.150:3000';

@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 const HistoryVotingCard = ({ voting , onDetailsPress}) => {
     const { user } = useAuth();
 
-    const hasVoted = voting.voters.includes(user._id);
+    const hasVoted = voting.voters.includes(user?._id);
 
     const getWinner = () => {
         if (!voting.isActive) {
