@@ -44,7 +44,7 @@ export const register = async (req: Request, res: Response) => {
             last_name,
             nationality,
             password: hashedPassword,
-            type: 'ORGANIZER',
+            type: 'USER',
             county,
             city
         });

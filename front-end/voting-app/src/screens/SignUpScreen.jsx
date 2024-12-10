@@ -9,9 +9,11 @@ import signUpStyles from '../assets/signUpStyles';
 import loginStyles from '../assets/loginStyles';
 import axios from 'axios';
 
+
 const SignUpScreen = ({ navigation }) => {
     const [scannedImage, setScannedImage] = useState(null);
     const [apiResponse, setApiResponse] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleSignUp = () => {
         if (password !== confirmPassword) {
@@ -52,14 +54,16 @@ const SignUpScreen = ({ navigation }) => {
                     type: 'image/jpeg',
                 });
 
+                setLoading(true);
                 const response = await axios.post('http://192.168.0.74:3000/api/process-image', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
 
-                console.log('API response:', response.data);
+                // console.log('API response:', response.data);
 
+                setLoading(false);
                 setApiResponse(response.data);
                 navigation.navigate('CompleteSignUp', { apiResponse: response.data });
             } else {
@@ -88,9 +92,12 @@ const SignUpScreen = ({ navigation }) => {
                         <TouchableOpacity
                             style={signUpStyles.IdButton}
                             onPress={handlePickImage}
+                            disabled={loading}
                         >
                             <Icon name="camera" style={signUpStyles.cameraIcon} />
-                            <Text style={signUpStyles.IdButtonText}>SELECT A PICTURE OF YOUR ID</Text>
+                            <Text style={signUpStyles.IdButtonText}>
+                                {loading ? 'PROCESSING...' : 'SELECT A PICTURE OF YOUR ID'}
+                            </Text>
                         </TouchableOpacity>
                     </View>
                     <View style={loginStyles.loginForm}>

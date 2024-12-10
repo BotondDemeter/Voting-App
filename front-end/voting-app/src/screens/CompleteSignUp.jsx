@@ -5,9 +5,11 @@ import loginStyles from "../assets/loginStyles";
 import { useState } from "react";
 import useRegister from "../hooks/useRegister";
 import completeSignUpStyles from "../assets/completeSignUpStyles";
+import { useNavigation } from "@react-navigation/native";
 
 
-const CompleteSignUp = ({ route, navigation }) => {
+const CompleteSignUp = ({ route }) => {
+    const navigation = useNavigation();
     const { apiResponse } = route.params;
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -26,13 +28,14 @@ const CompleteSignUp = ({ route, navigation }) => {
             confirmPassword
         };
 
+        nationality = 'ROU'
 
         console.log('User Data:', userData);
 
         console.log(apiResponse);
 
         try {
-            registerUser(apiResponse.cnp, apiResponse.first_name, apiResponse.id_number, apiResponse.last_name, apiResponse.nationality, apiResponse.county, apiResponse.city, password, confirmPassword);
+            registerUser(apiResponse.cnp, apiResponse.first_name, apiResponse.id_number, apiResponse.last_name, nationality, apiResponse.county, apiResponse.city, password, confirmPassword);
 
 
         } catch (err) {
@@ -67,10 +70,7 @@ const CompleteSignUp = ({ route, navigation }) => {
                             <Text style={completeSignUpStyles.label}>Last Name: </Text>
                             <Text style={completeSignUpStyles.responses}>{apiResponse.last_name}</Text>
                         </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={completeSignUpStyles.label}>Nationality: </Text>
-                            <Text style={completeSignUpStyles.responses}>{apiResponse.nationality}</Text>
-                        </View>
+                       
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={completeSignUpStyles.label}>County: </Text>
                             <Text style={completeSignUpStyles.responses}>{apiResponse.county}</Text>

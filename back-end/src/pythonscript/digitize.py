@@ -60,12 +60,9 @@ def extract_id_number(text):
         cleaned_line = re.sub(r'[^A-Z0-9]', ' ', line.upper())
         match = re.match(r'([A-Z]{2})([0-9]{6})', cleaned_line)
         if match:
-            
-            prefix, number = match.group(1), match.group(2)
-            if prefix and number:
-                return prefix, number
+           return f"{match.group(1)}{match.group(2)}"
     return None
-
+        
 # Function to check completeness of extracted data
 def is_data_complete(data):
     required_fields = ["cnp", "id_number", "last_name", "first_name", "nationality", "county", "city", "issue_date", "expiration_date"]
@@ -103,32 +100,23 @@ try:
         processed_img = preprocess_image(img, config)
         text = pytesseract.image_to_string(processed_img, lang='hun+ron')
 
-
         # Extract fields
-        if not partial_extracted_data.get("first_name"):
-            first_name = extract_first_name(text)
-            if first_name:
-                partial_extracted_data["first_name"] = first_name
+        if "first_name" not in partial_extracted_data:
+            partial_extracted_data["first_name"] = extract_first_name(text)
 
-        if not partial_extracted_data.get("last_name"):
-            last_name = extract_last_name(text)
-            if last_name:
-                partial_extracted_data["last_name"] = last_name
+        if "last_name" not in partial_extracted_data:
+            partial_extracted_data["last_name"] = extract_last_name(text)
 
-        if not partial_extracted_data.get("id_number"):
-            id_number = extract_id_number(text)
-            if id_number:
-                partial_extracted_data["id_number"] = id_number
+        if "id_number" not in partial_extracted_data:
+            partial_extracted_data["id_number"] = extract_id_number(text)
 
-        i = 0 
         for key, pattern in patterns.items():
             if key not in partial_extracted_data:
                 match = re.search(pattern, text, re.IGNORECASE)
                 if match:
                     partial_extracted_data[key] = match.group(1).strip()
-                    print(i , partial_extracted_data)
-                    i += 1
-
+                    
+                    
         # Check for issue and expiration dates
         validity_match = re.search(r'(\d{2}\.\d{2}\.\d{2})\s*-\s*(\d{2}\.\d{2}\.\d{4})\s*\n*\s*IDROU', text)
         if validity_match:

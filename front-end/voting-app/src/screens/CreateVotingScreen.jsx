@@ -8,7 +8,9 @@ import {
   ScrollView,
   SafeAreaView,
   PaperProvider,
-  handleSubmit
+  handleSubmit,
+  KeyboardAvoidingView,
+  Platform
  } from 'react-native';
  import DateTimePicker  from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
@@ -16,7 +18,8 @@ import createVotingStyles from '../assets/createVotingStyles';
 import { fetchAllCounties } from '../api/county';
 import { getCityByCountyName } from '../api/city';
 import { createVoting } from '../api/voting';
-const CreateVotingScreen = () => {
+import { useNavigation } from '@react-navigation/native';
+const CreateVotingScreen = ({route, navigation}) => {
   const [votingData, setVotingData] = useState({
     name: '',
     description: '',
@@ -145,12 +148,16 @@ const CreateVotingScreen = () => {
       }
       const result = await createVoting(votingData);
       console.log('Voting created successfully!', result);
+      navigation.navigate('Home');
     } catch (error) {
       console.error('Error creating voting:', error);
     }
   };
   return (
     <SafeAreaView style={createVotingStyles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
       <ScrollView>
         <Text style={createVotingStyles.headerText}>Create New Voting</Text>
 
@@ -245,7 +252,7 @@ const CreateVotingScreen = () => {
         <View style={createVotingStyles.submitButtonContainer}>
         <TouchableOpacity 
         style={createVotingStyles.submitButton} 
-        onPress={handleCancel}>
+        >
           <Text style={createVotingStyles.submitButtonText}>Cancel</Text>
         </TouchableOpacity>
         </View>
@@ -279,7 +286,8 @@ const CreateVotingScreen = () => {
         <View style={createVotingStyles.submitButtonContainer}>
         <TouchableOpacity
           style={createVotingStyles.submitButton} 
-          onPress={handleConfirmEndDate}>
+          onPress={handleConfirmEndDate}
+          >
         <Text style={createVotingStyles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
         </View>
@@ -287,7 +295,7 @@ const CreateVotingScreen = () => {
         <View style={createVotingStyles.submitButtonContainer}>
         <TouchableOpacity 
         style={createVotingStyles.submitButton} 
-        onPress={handleCancel}>
+        >
           <Text style={createVotingStyles.submitButtonText}>Cancel</Text>
         </TouchableOpacity>
         </View>
@@ -335,6 +343,7 @@ const CreateVotingScreen = () => {
         <Text style={createVotingStyles.addButtonText}>Submit</Text>
         </TouchableOpacity>
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

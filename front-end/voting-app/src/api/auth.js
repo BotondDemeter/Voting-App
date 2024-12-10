@@ -13,6 +13,7 @@ export const login = async (id_number, password) => {
 
 export const register = async (cnp, first_name, id_number, last_name, nationality, county, city, password, confirmPassword) => {
   try {
+    console.log('Registration data:', { cnp, first_name, id_number, last_name, nationality, county, city, password, confirmPassword });
     const response = await apiClient.post('/auth/register', { cnp, first_name, id_number, last_name, nationality, county, city, password, confirmPassword });
     console.log('Registration successful');
     return response.data;

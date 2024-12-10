@@ -8,6 +8,7 @@ const useRegister = () => {
 
     const registerUser = async (cnp, first_name, id_number, last_name, nationality, county, city, password, confirmPassword) => {
         try {
+
             setLoading(true);
             setError(null);
 
@@ -21,8 +22,8 @@ const useRegister = () => {
                 return false; // Indicate failure
             }
         } catch (err) {
-            console.error('Login Error:', err);
-            setError('An error occurred during login');
+            console.error('Register Error:', err);
+            setError('An error occurred during registration');
             return false;
         } finally {
             setLoading(false);
